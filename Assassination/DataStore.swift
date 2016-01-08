@@ -83,4 +83,33 @@ class DataManager {
         fileManager.createFileAtPath(path.path!, contents: imageData, attributes: nil)
         
     }
+    
+    // API URLs
+    
+    var CreateUserURL : NSURL? {
+        
+        if let _ = appUser {
+            return NSURL(string: String(format: "%@/Account/CreateUser?UUID=%@", Constants.API_URL, UIDevice.currentDevice().identifierForVendor!.UUIDString))
+        }
+        
+        return nil
+    }
+    
+    var EditUserURL : NSURL? {
+        
+        if let _ = appUser {
+            return NSURL(string: String(format: "%@/Account/EditUser?id=%@", Constants.API_URL, String(User.AppUserID)))
+        }
+        
+        return nil
+    }
+    
+    var DeleteUserURL : NSURL? {
+        
+        if let _ = appUser {
+            return NSURL(string: String(format: "%@/Account/DeleteUser?playerID=%@&email=%@&password=%@", Constants.API_URL, String(User.AppUserID), User.AppUserEmail!, User.AppUserPassword!))
+        }
+        
+        return nil
+    }
 }

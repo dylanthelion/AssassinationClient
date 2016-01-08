@@ -12,8 +12,7 @@ private let sharedHelper = LoginHelper()
 
 class LoginHelper {
     
-    var userID : Int?
-    var userName : String?
+    let dataManager = DataManager.AppData
     
     class  var appLogin : LoginHelper {
         return sharedHelper
