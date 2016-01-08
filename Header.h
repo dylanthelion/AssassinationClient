@@ -10,5 +10,6 @@
 #define Header_h
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 #endif /* Header_h */
