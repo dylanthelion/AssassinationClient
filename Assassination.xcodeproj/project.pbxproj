@@ -21,6 +21,7 @@
 		745F57B71C4007E8001B7CC9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57B61C4007E8001B7CC9 /* User.swift */; };
 		745F57BB1C4068C0001B7CC9 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57BA1C4068C0001B7CC9 /* DataStore.swift */; };
 		745F57BF1C4078E0001B7CC9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57BE1C4078E0001B7CC9 /* Constants.swift */; };
+		745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		745F57B61C4007E8001B7CC9 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		745F57BA1C4068C0001B7CC9 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		745F57BE1C4078E0001B7CC9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				745F57AE1C3FFCCC001B7CC9 /* LoginViewController.swift */,
+				745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */,
 			);
 			name = ViewControllers;
 			path = ..;
@@ -323,6 +326,7 @@
 				745F57B71C4007E8001B7CC9 /* User.swift in Sources */,
 				745F57AF1C3FFCCC001B7CC9 /* LoginViewController.swift in Sources */,
 				745F57741C3FF24B001B7CC9 /* AppDelegate.swift in Sources */,
+				745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */,
 				745F57BB1C4068C0001B7CC9 /* DataStore.swift in Sources */,
 				745F57B41C40043D001B7CC9 /* LoginHelper.swift in Sources */,
 				745F57BF1C4078E0001B7CC9 /* Constants.swift in Sources */,

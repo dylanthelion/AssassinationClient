@@ -48,6 +48,10 @@ class DataManager {
             created = true
         }
         
+        if let _ = dataEntry["FBToken"], _ = dataEntry["FBID"] {
+            User.FBAccessToken = dataEntry["FBToken"]
+            User.FBUserID = dataEntry["FBID"]
+        }
     }
     
     func saveUserData() {
@@ -65,10 +69,15 @@ class DataManager {
         var dictionaryToWrite = [String:String]()
         
         if let _ = appUser {
-            dictionaryToWrite["ID"] = String(User.AppUserID)
-            dictionaryToWrite["Name"] = User.AppUserName
-            dictionaryToWrite["Email"] = User.AppUserEmail
-            dictionaryToWrite["Password"] = User.AppUserPassword
+            dictionaryToWrite["ID"] = String(User.AppUserID!)
+            dictionaryToWrite["Name"] = User.AppUserName!
+            dictionaryToWrite["Email"] = User.AppUserEmail!
+            dictionaryToWrite["Password"] = User.AppUserPassword!
+            if let _ = User.FBAccessToken, _ = User.FBUserID {
+                dictionaryToWrite["FBToken"] = User.FBAccessToken!
+                dictionaryToWrite["FBID"] = User.FBUserID!
+            }
+            
         }
         
         return dictionaryToWrite

@@ -16,9 +16,9 @@ class User {
         private static var Name : String?
         private static var Email : String?
         private static var Password : String?
+        private static var FBAccessToken : String?
+        private static var FBUserID : String?
     }
-    
-    
     
     init() {
         
@@ -51,5 +51,13 @@ class User {
         set { UserData.Email = newValue }
     }
     
+    class var FBAccessToken: String? {
+        get { return UserData.FBAccessToken }
+        set { UserData.FBAccessToken = newValue }
+    }
     
+    class var FBUserID: String? {
+        get { return UserData.FBUserID }
+        set { UserData.FBUserID = newValue }
+    }
 }
