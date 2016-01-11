@@ -137,6 +137,7 @@
                     </view>
                     <connections>
                         <outlet property="AddPasswordLabel" destination="lCS-dW-jxr" id="Nxb-ce-fKY"/>
+                        <outlet property="ChangeProfilePicButton" destination="zjs-Xm-Nue" id="MZ3-eC-fCX"/>
                         <outlet property="EmailTextBox" destination="ptw-Ze-nIq" id="M5A-ZI-rxn"/>
                         <outlet property="PasswordTextBox" destination="wtr-kZ-UJs" id="lFG-HC-FaT"/>
                         <outlet property="ProfileImageView" destination="9qQ-vf-dBV" id="18U-dq-fp6"/>

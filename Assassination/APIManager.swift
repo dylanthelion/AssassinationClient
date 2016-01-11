@@ -41,6 +41,4 @@ class APIManager {
         
         return (false, "Something went wrong")
     }
-    
-    
 }

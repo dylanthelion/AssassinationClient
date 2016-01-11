@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateUserViewController: UIViewController {
+class CreateUserViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var AddPasswordLabel: UILabel!
     
@@ -19,6 +19,8 @@ class CreateUserViewController: UIViewController {
     @IBOutlet weak var UserNameTextBox: UITextField!
     
     @IBOutlet weak var PasswordTextBox: UITextField!
+    
+    @IBOutlet weak var ChangeProfilePicButton: UIButton!
     
     let dataManager : DataManager = DataManager.AppData
     
@@ -46,6 +48,8 @@ class CreateUserViewController: UIViewController {
             }
         } else if let _ = FBResults {
             print("Load FB results")
+            ChangeProfilePicButton.hidden = true
+            ChangeProfilePicButton.enabled = false
             AddPasswordLabel.hidden = false
             EmailTextBox.text = FBResults!["email"]!
             UserNameTextBox.text = FBResults!["name"]!
@@ -53,6 +57,9 @@ class CreateUserViewController: UIViewController {
                 print("Image found")
                 ProfileImageView.image = checkImage
             }
+        } else {
+            ChangeProfilePicButton.hidden = true
+            ChangeProfilePicButton.enabled = false
         }
     }
     
@@ -69,6 +76,8 @@ class CreateUserViewController: UIViewController {
             
             if(response.success) {
                 AddPasswordLabel.hidden = true
+                ChangeProfilePicButton.hidden = false
+                ChangeProfilePicButton.enabled = true
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 AddPasswordLabel.text = response.message
@@ -79,7 +88,47 @@ class CreateUserViewController: UIViewController {
     }
     
     @IBAction func SetProfilePic(sender: AnyObject) {
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.delegate = self
+        presentViewController(imagePicker, animated: true, completion: nil)
     }
     
+    
+    // MARK: - ImagePickerDelegate
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]){
+        var imageToPost : UIImage? = nil
+        
+        if let editedPic = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            imageToPost = editedPic
+        } else if let uneditedPic = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            imageToPost = uneditedPic
+        } else {
+            print("Something went wrong")
+            return
+        }
+        
+        if let _ = imageToPost {
+            let HTTPManager = HTTPRequests.RequestManager
+            let url = dataManager.PostImageURL
+            if let _ = url {
+                let response = HTTPManager.postImage(url!, image: imageToPost!)
+                if(response.0) {
+                    dataManager.saveProfilePic(imageToPost!)
+                    ProfileImageView.image = imageToPost!
+                } else {
+                    print(response.1)
+                    return
+                }
+            }
+            
+        }
+    }
     
 }

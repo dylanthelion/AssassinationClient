@@ -50,6 +50,7 @@ class HTTPRequests {
     }
     
     func GetJSONArrayResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?) -> [String]? {
+        
         var returnObject : [String]?
         
         if let _ = url {
@@ -101,6 +102,43 @@ class HTTPRequests {
         return returnObject
     }
     
+    func postImage(url: NSURL?, image: UIImage) -> (Bool, [String]) {
+        
+        var returnObject : (Bool, [String]) = (false, ["Something went wrong"])
+        
+        let request : NSMutableURLRequest = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let imageData = UIImageJPEGRepresentation(image, 0.9)
+        let base64String = imageData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(base64String, options: NSJSONWritingOptions(rawValue: 0))
+        } catch _ {
+            print("Failed to encode image")
+            returnObject = (false, ["Failed to encode image"])
+        }
+        
+        let session = NSURLSession.sharedSession()
+        
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            if let _ = data {
+                let checkData = self.JSONBuilder.JSONMessageStringToArray(data)
+                if let checkCheck = checkData {
+                    returnObject = (true, checkCheck as! [String])
+                } else {
+                    returnObject = (false, ["Failed to process response"])
+                }
+            }
+        })
+        
+        task.resume()
+        
+        return returnObject
+    }
+    
     private func BuildURLRequest(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?) -> NSURLRequest? {
         
         let request : NSMutableURLRequest = NSMutableURLRequest(URL: url!)
@@ -119,4 +157,6 @@ class HTTPRequests {
         
         return request
     }
+    
+    
 }

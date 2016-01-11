@@ -131,6 +131,12 @@ class DataManager {
         }
     }
     
+    func saveProfilePic(image : UIImage) {
+        if let _ = appUser {
+            saveImageToFile(image, name: User.AppUserName!)
+        }
+    }
+    
     // API URLs
     
     var CreateUserURL : NSURL? {
@@ -149,7 +155,16 @@ class DataManager {
     var DeleteUserURL : NSURL? {
         
         if let _ = appUser {
-            return NSURL(string: String(format: "%@/Account/DeleteUser?playerID=%@&email=%@&password=%@", Constants.API_URL, String(User.AppUserID), User.AppUserEmail!, User.AppUserPassword!))
+            return NSURL(string: String(format: "%@/Account/DeleteUser?playerID=%@&email=%@&password=%@", Constants.API_URL, String(User.AppUserID!), User.AppUserEmail!, User.AppUserPassword!))
+        }
+        
+        return nil
+    }
+    
+    var PostImageURL : NSURL? {
+        
+        if let _ = appUser {
+            return NSURL(string: String(format: "%@/Image/SetImage?playerID=%@&password=%@", Constants.API_URL, String(User.AppUserID!), User.AppUserPassword!))
         }
         
         return nil
