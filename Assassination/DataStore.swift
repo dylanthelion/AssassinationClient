@@ -64,6 +64,21 @@ class DataManager {
         created = true
     }
     
+    func deleteUserData() {
+        
+        let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/UserData.plist")
+        
+        if(!fileManager.fileExistsAtPath(path.path!)) {
+            return
+        }
+        
+        do {
+            try fileManager.removeItemAtURL(path)
+        } catch _ {
+            print("Failed to delete UserData file")
+        }
+    }
+    
     func buildDataToWrite() -> Dictionary<String, String> {
         
         var dictionaryToWrite = [String:String]()
@@ -91,6 +106,29 @@ class DataManager {
         let imageData = UIImagePNGRepresentation(image)
         fileManager.createFileAtPath(path.path!, contents: imageData, attributes: nil)
         
+    }
+    
+    func loadImageFromFile(name : String) -> UIImage? {
+        
+        let fileExtension = "/\(name)"
+        let path = DocumentsDirectoryPath.URLByAppendingPathComponent(fileExtension)
+        if(fileManager.fileExistsAtPath(path.path!)) {
+            return UIImage(contentsOfFile: path.path!)
+        }
+        return nil
+    }
+    
+    func updateUserImageName(oldName : String, newName : String) {
+        if let checkImage = loadImageFromFile(oldName) {
+            
+            do {
+               try fileManager.removeItemAtPath(oldName)
+            } catch {
+                print("Deletion failed")
+            }
+            
+            saveImageToFile(checkImage, name: newName)
+        }
     }
     
     // API URLs

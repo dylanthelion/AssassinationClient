@@ -18,12 +18,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bao-If-Hax">
-                                <rect key="frame" x="132" y="97" width="336" height="274"/>
+                                <rect key="frame" x="132" y="97" width="336" height="199"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ei4-vb-f3j" customClass="FBSDKLoginButton">
-                                <rect key="frame" x="183" y="395" width="234" height="30"/>
-                                <state key="normal" title="Login With Facebook"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QsF-kh-2rD">
                                 <rect key="frame" x="183" y="522" width="234" height="30"/>
                                 <state key="normal" title="Go To Games"/>
@@ -41,6 +37,17 @@
                                     <segue destination="Pku-OT-LLW" kind="show" identifier="CreateUser" id="cEZ-E2-4kw"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBt-jt-bxR">
+                                <rect key="frame" x="215" y="384" width="171" height="30"/>
+                                <state key="normal" title="Log out"/>
+                                <connections>
+                                    <action selector="FBLogut:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sbm-Xw-EyU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ei4-vb-f3j" customClass="FBSDKLoginButton">
+                                <rect key="frame" x="183" y="327" width="234" height="30"/>
+                                <state key="normal" title="Login With Facebook"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -48,7 +55,9 @@
                     <connections>
                         <outlet property="CreateUserButton" destination="uOQ-9r-ovb" id="fbH-ul-EbF"/>
                         <outlet property="FBLoginButton" destination="ei4-vb-f3j" id="9z7-YZ-TWX"/>
+                        <outlet property="FBLogoutButton" destination="SBt-jt-bxR" id="WDl-wJ-SZI"/>
                         <outlet property="PlayButton" destination="QsF-kh-2rD" id="JMr-PB-tKC"/>
+                        <outlet property="ProfilePicImage" destination="bao-If-Hax" id="Pv3-kI-UOs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -68,34 +77,71 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JF7-hM-7DN">
-                                <rect key="frame" x="382" y="141" width="168" height="30"/>
+                                <rect key="frame" x="382" y="363" width="168" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Minimum 10 characters" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wtr-kZ-UJs">
-                                <rect key="frame" x="382" y="219" width="168" height="30"/>
+                                <rect key="frame" x="382" y="421" width="168" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="User Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JCi-gX-mIK">
-                                <rect key="frame" x="78" y="145" width="122" height="21"/>
+                                <rect key="frame" x="78" y="367" width="122" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhx-Hx-vbB">
-                                <rect key="frame" x="78" y="223" width="122" height="21"/>
+                                <rect key="frame" x="78" y="425" width="122" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twh-r6-OtX">
-                                <rect key="frame" x="214" y="431" width="173" height="30"/>
+                                <rect key="frame" x="214" y="509" width="173" height="30"/>
                                 <state key="normal" title="Submit!"/>
+                                <connections>
+                                    <action selector="SubmitUser:" destination="Pku-OT-LLW" eventType="touchUpInside" id="gej-2o-Cd2"/>
+                                </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9qQ-vf-dBV">
+                                <rect key="frame" x="27" y="116" width="225" height="155"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zjs-Xm-Nue">
+                                <rect key="frame" x="355" y="169" width="158" height="30"/>
+                                <state key="normal" title="Set Profile Pic"/>
+                                <connections>
+                                    <action selector="SetProfilePic:" destination="Pku-OT-LLW" eventType="touchUpInside" id="IFy-el-H2r"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ptw-Ze-nIq">
+                                <rect key="frame" x="382" y="303" width="168" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fci-qj-wjY">
+                                <rect key="frame" x="78" y="307" width="122" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Please choose a password for your Assassination account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lCS-dW-jxr">
+                                <rect key="frame" x="70" y="87" width="461" height="21"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                                <color key="textColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="AddPasswordLabel" destination="lCS-dW-jxr" id="Nxb-ce-fKY"/>
+                        <outlet property="EmailTextBox" destination="ptw-Ze-nIq" id="M5A-ZI-rxn"/>
+                        <outlet property="PasswordTextBox" destination="wtr-kZ-UJs" id="lFG-HC-FaT"/>
+                        <outlet property="ProfileImageView" destination="9qQ-vf-dBV" id="18U-dq-fp6"/>
+                        <outlet property="UserNameTextBox" destination="JF7-hM-7DN" id="JMI-NM-Md6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HnW-Ij-9jT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

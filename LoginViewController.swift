@@ -16,25 +16,43 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var FBLoginButton: FBSDKLoginButton!
     
+    @IBOutlet weak var FBLogoutButton: UIButton!
     @IBOutlet weak var CreateUserButton: UIButton!
     
     @IBOutlet weak var PlayButton: UIButton!
+    
+    @IBOutlet weak var ProfilePicImage: UIImageView!
+    
+    var FBResults : Dictionary<String, String>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         FBLoginButton.delegate = self
         FBLoginButton.readPermissions = self.facebookReadPermissions
+        
+        checkLogin()
+        
+    }
+    
+    func checkLogin() {
         var loggedIn = false
         
         if let _ = dataManager.appUser {
             CreateUserButton.enabled = false
             loggedIn = true
+            if let checkImage = dataManager.loadImageFromFile(User.AppUserName!) {
+                ProfilePicImage.image = checkImage
+            }
         }
         
         if FBSDKAccessToken.currentAccessToken() != nil {
             FBLoginButton.enabled = false
+            FBLogoutButton.enabled = true
             loggedIn = true
+        } else {
+            FBLoginButton.enabled = true
+            FBLogoutButton.enabled = false
         }
         
         if(!loggedIn) {
@@ -45,17 +63,20 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let checkID = segue.identifier {
+            
+            if(checkID == "CreateUser") {
+                //If account already created, fill fields from ViewDidLoad
+                if let _ = dataManager.appUser {
+                    return
+                    // If logged in through Facebook, fill fields from login results
+                } else if let _ = FBResults, destination = segue.destinationViewController as? CreateUserViewController {
+                    destination.FBResults = FBResults
+                }
+            }
+        }
     }
-    */
     
     // MARK: - FBLoginDelegate
     
@@ -82,14 +103,34 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 req.startWithCompletionHandler({ (connection, getResult, error : NSError!) -> Void in
                     if(error == nil)
                     {
-                        print("result \(getResult)")
+                        print("Logged in to FB!")
+                        self.FBResults = getResult as? Dictionary<String, String>
+                        
+                        let urlString = "https://graph.facebook.com/\(self.FBResults!["id"]!)/picture?type=large"
+                        
+                        let url = NSURL(string: urlString)!
+                        
+                        let urlRequest = NSURLRequest(URL: url)
+                        
+                        
+                        let session = NSURLSession.sharedSession()
+                        
+                        let task = session.dataTaskWithRequest(urlRequest, completionHandler: {data, response, error -> Void in
+                            if let _ = data {
+                                let image = UIImage(data: data!)
+                                self.dataManager.saveImageToFile(image!, name: self.FBResults!["name"]!)
+                            }
+                        })
+                        
+                        task.resume()
+                        
+                self.performSegueWithIdentifier("CreateUser", sender: nil)
                     }
                     else
                     {
                         print("error \(error)")
                     }
                 })
-                
             } else {
                 print("Not all permissions were granted")
             }
@@ -100,10 +141,16 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         FBSDKLoginManager().logOut()
         User.FBAccessToken = nil
         User.FBUserID = nil
+        dataManager.deleteUserData()
     }
     
     func loginButtonWillLogin(loginButton: FBSDKLoginButton!) -> Bool {
         return true
     }
 
+    @IBAction func FBLogut(sender: AnyObject) {
+        FBSDKLoginManager().logOut()
+        FBLoginButton.enabled = true
+        FBLogoutButton.enabled = false
+    }
 }
