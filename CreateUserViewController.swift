@@ -22,9 +22,11 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBOutlet weak var ChangeProfilePicButton: UIButton!
     
+    @IBOutlet weak var Checkbox: UIButton!
     let dataManager : DataManager = DataManager.AppData
     
     var FBResults : Dictionary<String, String>?
+    var checked : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +66,36 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     @IBAction func SubmitUser(sender: AnyObject) {
+        
+        if(checked) {
+            AddDeviceToAccount()
+        } else {
+            CreateUser()
+        }
+    }
+    
+    @IBAction func SetProfilePic(sender: AnyObject) {
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.delegate = self
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func AddDevice(sender: AnyObject) {
+        if(checked) {
+            checked = false
+            Checkbox.setBackgroundImage(UIImage(named: "blank.png"), forState: .Normal)
+        } else {
+            checked = true
+            Checkbox.setBackgroundImage(UIImage(named: "checked.jpg"), forState: .Normal)
+        }
+    }
+    
+    // MARK: - API funcs
+    
+    private func CreateUser() {
+        
         if let name = UserNameTextBox.text, email = EmailTextBox.text, password = PasswordTextBox.text {
             
             if(password.characters.count < 10) {
@@ -87,14 +119,30 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    @IBAction func SetProfilePic(sender: AnyObject) {
+    private func AddDeviceToAccount() {
         
-        let imagePicker = UIImagePickerController()
-        imagePicker.allowsEditing = true
-        imagePicker.delegate = self
-        presentViewController(imagePicker, animated: true, completion: nil)
+        if let name = UserNameTextBox.text, email = EmailTextBox.text, password = PasswordTextBox.text {
+            
+            if(password.characters.count < 10) {
+                PasswordTextBox.text = "Must be at least 10 characters"
+                PasswordTextBox.textColor = UIColor.redColor()
+                return
+            }
+            
+            let response = APIManager.AddDevice(name, password: password, email: email)
+            
+            if(response.success) {
+                AddPasswordLabel.hidden = true
+                ChangeProfilePicButton.hidden = false
+                ChangeProfilePicButton.enabled = true
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                AddPasswordLabel.text = response.message
+                AddPasswordLabel.textColor = UIColor.redColor()
+                AddPasswordLabel.hidden = false
+            }
+        }
     }
-    
     
     // MARK: - ImagePickerDelegate
     

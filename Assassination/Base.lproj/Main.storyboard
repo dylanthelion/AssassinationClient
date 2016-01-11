@@ -98,13 +98,6 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twh-r6-OtX">
-                                <rect key="frame" x="214" y="509" width="173" height="30"/>
-                                <state key="normal" title="Submit!"/>
-                                <connections>
-                                    <action selector="SubmitUser:" destination="Pku-OT-LLW" eventType="touchUpInside" id="gej-2o-Cd2"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9qQ-vf-dBV">
                                 <rect key="frame" x="27" y="116" width="225" height="155"/>
                             </imageView>
@@ -132,12 +125,33 @@
                                 <color key="textColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEf-Jv-Klz">
+                                <rect key="frame" x="443" y="478" width="29" height="30"/>
+                                <state key="normal" backgroundImage="blank"/>
+                                <connections>
+                                    <action selector="AddDevice:" destination="Pku-OT-LLW" eventType="touchUpInside" id="M6a-tj-HoM"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add this device to an existing account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnV-CT-IOa">
+                                <rect key="frame" x="49" y="482" width="290" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twh-r6-OtX">
+                                <rect key="frame" x="214" y="536" width="173" height="30"/>
+                                <state key="normal" title="Submit!"/>
+                                <connections>
+                                    <action selector="SubmitUser:" destination="Pku-OT-LLW" eventType="touchUpInside" id="gej-2o-Cd2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="AddPasswordLabel" destination="lCS-dW-jxr" id="Nxb-ce-fKY"/>
                         <outlet property="ChangeProfilePicButton" destination="zjs-Xm-Nue" id="MZ3-eC-fCX"/>
+                        <outlet property="Checkbox" destination="gEf-Jv-Klz" id="eon-9E-4jm"/>
                         <outlet property="EmailTextBox" destination="ptw-Ze-nIq" id="M5A-ZI-rxn"/>
                         <outlet property="PasswordTextBox" destination="wtr-kZ-UJs" id="lFG-HC-FaT"/>
                         <outlet property="ProfileImageView" destination="9qQ-vf-dBV" id="18U-dq-fp6"/>
@@ -167,4 +181,7 @@
             <point key="canvasLocation" x="-140" y="1047"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="blank" width="225" height="224"/>
+    </resources>
 </document>

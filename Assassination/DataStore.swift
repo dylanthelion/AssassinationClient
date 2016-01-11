@@ -169,4 +169,8 @@ class DataManager {
         
         return nil
     }
+    
+    class func AddDeviceURL(name: String, password : String) -> NSURL? {
+            return NSURL(string: String(format: "%@/Device/AddDeviceToAccount?userName=%@&password=%@&UUID=%@", Constants.API_URL, name, password, UIDevice.currentDevice().identifierForVendor!.UUIDString))
+    }
 }
