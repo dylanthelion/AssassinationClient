@@ -57,6 +57,25 @@ class CreateUserViewController: UIViewController {
     }
     
     @IBAction func SubmitUser(sender: AnyObject) {
+        if let name = UserNameTextBox.text, email = EmailTextBox.text, password = PasswordTextBox.text {
+            
+            if(password.characters.count < 10) {
+                PasswordTextBox.text = "Must be at least 10 characters"
+                PasswordTextBox.textColor = UIColor.redColor()
+                return
+            }
+            
+            let response = APIManager.CreateUser(name, email: email, password: password)
+            
+            if(response.success) {
+                AddPasswordLabel.hidden = true
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                AddPasswordLabel.text = response.message
+                AddPasswordLabel.textColor = UIColor.redColor()
+                AddPasswordLabel.hidden = false
+            }
+        }
     }
     
     @IBAction func SetProfilePic(sender: AnyObject) {

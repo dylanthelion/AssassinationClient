@@ -134,12 +134,7 @@ class DataManager {
     // API URLs
     
     var CreateUserURL : NSURL? {
-        
-        if let _ = appUser {
-            return NSURL(string: String(format: "%@/Account/CreateUser?UUID=%@", Constants.API_URL, UIDevice.currentDevice().identifierForVendor!.UUIDString))
-        }
-        
-        return nil
+        return NSURL(string: String(format: "%@/Account/CreateUser?UUID=%@", Constants.API_URL, UIDevice.currentDevice().identifierForVendor!.UUIDString))
     }
     
     var EditUserURL : NSURL? {

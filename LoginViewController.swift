@@ -107,22 +107,12 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                         self.FBResults = getResult as? Dictionary<String, String>
                         
                         let urlString = "https://graph.facebook.com/\(self.FBResults!["id"]!)/picture?type=large"
-                        
+                        let requestType = "GET"
                         let url = NSURL(string: urlString)!
                         
-                        let urlRequest = NSURLRequest(URL: url)
-                        
-                        
-                        let session = NSURLSession.sharedSession()
-                        
-                        let task = session.dataTaskWithRequest(urlRequest, completionHandler: {data, response, error -> Void in
-                            if let _ = data {
-                                let image = UIImage(data: data!)
-                                self.dataManager.saveImageToFile(image!, name: self.FBResults!["name"]!)
-                            }
-                        })
-                        
-                        task.resume()
+                        if let response = HTTPRequests.RequestManager.GetImageResponse(url, requestType: requestType, requestBody: nil) {
+                            self.dataManager.saveImageToFile(response, name: self.FBResults!["name"]!)
+                        }
                         
                 self.performSegueWithIdentifier("CreateUser", sender: nil)
                     }

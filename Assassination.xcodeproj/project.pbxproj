@@ -22,6 +22,10 @@
 		745F57BB1C4068C0001B7CC9 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57BA1C4068C0001B7CC9 /* DataStore.swift */; };
 		745F57BF1C4078E0001B7CC9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57BE1C4078E0001B7CC9 /* Constants.swift */; };
 		745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */; };
+		745F57C31C43443D001B7CC9 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C21C43443D001B7CC9 /* APIManager.swift */; };
+		745F57C51C434520001B7CC9 /* HTTPRequestFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C41C434520001B7CC9 /* HTTPRequestFuncs.swift */; };
+		745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */; };
+		745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57CB1C43562D001B7CC9 /* StringExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +68,10 @@
 		745F57BA1C4068C0001B7CC9 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		745F57BE1C4078E0001B7CC9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserViewController.swift; sourceTree = "<group>"; };
+		745F57C21C43443D001B7CC9 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		745F57C41C434520001B7CC9 /* HTTPRequestFuncs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestFuncs.swift; sourceTree = "<group>"; };
+		745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONObjectBuilder.swift; sourceTree = "<group>"; };
+		745F57CB1C43562D001B7CC9 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +126,7 @@
 		745F57721C3FF24B001B7CC9 /* Assassination */ = {
 			isa = PBXGroup;
 			children = (
+				745F57C81C435290001B7CC9 /* Extensions */,
 				745F57B51C4007D5001B7CC9 /* Models */,
 				745F57B21C400429001B7CC9 /* Helpers */,
 				745F57AD1C3FFC6D001B7CC9 /* ViewControllers */,
@@ -175,6 +184,9 @@
 				745F57B31C40043D001B7CC9 /* LoginHelper.swift */,
 				745F57BA1C4068C0001B7CC9 /* DataStore.swift */,
 				745F57BE1C4078E0001B7CC9 /* Constants.swift */,
+				745F57C21C43443D001B7CC9 /* APIManager.swift */,
+				745F57C41C434520001B7CC9 /* HTTPRequestFuncs.swift */,
+				745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -185,6 +197,14 @@
 				745F57B61C4007E8001B7CC9 /* User.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		745F57C81C435290001B7CC9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				745F57CB1C43562D001B7CC9 /* StringExtensions.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,13 +343,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				745F57C31C43443D001B7CC9 /* APIManager.swift in Sources */,
 				745F57B71C4007E8001B7CC9 /* User.swift in Sources */,
+				745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */,
 				745F57AF1C3FFCCC001B7CC9 /* LoginViewController.swift in Sources */,
 				745F57741C3FF24B001B7CC9 /* AppDelegate.swift in Sources */,
 				745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */,
+				745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */,
 				745F57BB1C4068C0001B7CC9 /* DataStore.swift in Sources */,
 				745F57B41C40043D001B7CC9 /* LoginHelper.swift in Sources */,
 				745F57BF1C4078E0001B7CC9 /* Constants.swift in Sources */,
+				745F57C51C434520001B7CC9 /* HTTPRequestFuncs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
