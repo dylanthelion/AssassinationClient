@@ -23,8 +23,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     @IBOutlet weak var ProfilePicImage: UIImageView!
     
-    var FBResults : Dictionary<String, String>?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,6 +55,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         if(!loggedIn) {
             PlayButton.enabled = false
+            if let tabBarItems = self.tabBarController?.tabBar.items {
+                tabBarItems[1].enabled = false
+            }
         }
     }
 
@@ -64,17 +65,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.didReceiveMemoryWarning()
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let checkID = segue.identifier {
+        if let _ = segue.identifier {
             
-            if(checkID == "CreateUser") {
-                //If account already created, fill fields from ViewDidLoad
-                if let _ = dataManager.appUser {
-                    return
-                    // If logged in through Facebook, fill fields from login results
-                } else if let _ = FBResults, destination = segue.destinationViewController as? CreateUserViewController {
-                    destination.FBResults = FBResults
-                }
-            }
         }
     }
     
@@ -104,14 +96,14 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     if(error == nil)
                     {
                         print("Logged in to FB!")
-                        self.FBResults = getResult as? Dictionary<String, String>
+                        self.dataManager.FBResults = getResult as? Dictionary<String, String>
                         
-                        let urlString = "https://graph.facebook.com/\(self.FBResults!["id"]!)/picture?type=large"
+                        let urlString = "https://graph.facebook.com/\(self.dataManager.FBResults!["id"]!)/picture?type=large"
                         let requestType = "GET"
                         let url = NSURL(string: urlString)!
                         
                         if let response = HTTPRequests.RequestManager.GetImageResponse(url, requestType: requestType, requestBody: nil) {
-                            self.dataManager.saveImageToFile(response, name: self.FBResults!["name"]!)
+                            self.dataManager.saveImageToFile(response, name: self.dataManager.FBResults!["name"]!)
                         }
                         
                 self.performSegueWithIdentifier("CreateUser", sender: nil)

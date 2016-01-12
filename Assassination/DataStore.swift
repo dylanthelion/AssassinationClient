@@ -15,6 +15,7 @@ class DataManager {
     let fileManager = NSFileManager.defaultManager()
     var appUser : User?
     var created : Bool = false
+    var FBResults : Dictionary<String, String>?
     
     
     init() {

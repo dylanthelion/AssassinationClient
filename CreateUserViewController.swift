@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateUserViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CreateUserViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var AddPasswordLabel: UILabel!
     
@@ -24,14 +24,19 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBOutlet weak var Checkbox: UIButton!
     let dataManager : DataManager = DataManager.AppData
-    
-    var FBResults : Dictionary<String, String>?
     var checked : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.setHidesBackButton(true, animated: true)
+        EmailTextBox.delegate = self
+        UserNameTextBox.delegate = self
+        PasswordTextBox.delegate = self
         loadUserData()
+        
+        if let tabBarItems = self.tabBarController?.tabBar.items {
+            tabBarItems[1].enabled = false
+        }
     }
     
     func loadUserData() {
@@ -46,18 +51,22 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
                 
                 if let checkImage = dataManager.loadImageFromFile(User.AppUserName!) {
                     ProfileImageView.image = checkImage
+                } else {
+                    ProfileImageView.image = UIImage(named: "user.png")
                 }
             }
-        } else if let _ = FBResults {
+        } else if let _ = dataManager.FBResults {
             print("Load FB results")
             ChangeProfilePicButton.hidden = true
             ChangeProfilePicButton.enabled = false
             AddPasswordLabel.hidden = false
-            EmailTextBox.text = FBResults!["email"]!
-            UserNameTextBox.text = FBResults!["name"]!
-            if let checkImage = dataManager.loadImageFromFile(FBResults!["name"]!) {
+            EmailTextBox.text = dataManager.FBResults!["email"]!
+            UserNameTextBox.text = dataManager.FBResults!["name"]!
+            if let checkImage = dataManager.loadImageFromFile(dataManager.FBResults!["name"]!) {
                 print("Image found")
                 ProfileImageView.image = checkImage
+            } else {
+                ProfileImageView.image = UIImage(named: "user.png")
             }
         } else {
             ChangeProfilePicButton.hidden = true
@@ -177,6 +186,17 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
             }
             
         }
+    }
+    
+    // MARK: - TextView Delegate
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        textField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }

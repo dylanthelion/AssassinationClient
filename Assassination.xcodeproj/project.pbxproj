@@ -26,6 +26,7 @@
 		745F57C51C434520001B7CC9 /* HTTPRequestFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C41C434520001B7CC9 /* HTTPRequestFuncs.swift */; };
 		745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */; };
 		745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57CB1C43562D001B7CC9 /* StringExtensions.swift */; };
+		745F580A1C448A87001B7CC9 /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F58091C448A87001B7CC9 /* EditUserViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		745F57C41C434520001B7CC9 /* HTTPRequestFuncs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequestFuncs.swift; sourceTree = "<group>"; };
 		745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONObjectBuilder.swift; sourceTree = "<group>"; };
 		745F57CB1C43562D001B7CC9 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		745F58091C448A87001B7CC9 /* EditUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +175,7 @@
 			children = (
 				745F57AE1C3FFCCC001B7CC9 /* LoginViewController.swift */,
 				745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */,
+				745F58091C448A87001B7CC9 /* EditUserViewController.swift */,
 			);
 			name = ViewControllers;
 			path = ..;
@@ -346,6 +349,7 @@
 				745F57C31C43443D001B7CC9 /* APIManager.swift in Sources */,
 				745F57B71C4007E8001B7CC9 /* User.swift in Sources */,
 				745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */,
+				745F580A1C448A87001B7CC9 /* EditUserViewController.swift in Sources */,
 				745F57AF1C3FFCCC001B7CC9 /* LoginViewController.swift in Sources */,
 				745F57741C3FF24B001B7CC9 /* AppDelegate.swift in Sources */,
 				745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */,
