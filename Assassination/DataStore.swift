@@ -31,6 +31,8 @@ class DataManager {
         return urls[0]
     }
     
+    // Loads user data. Called automatically from the login screen.
+    
     func loadUserData() {
         
         let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/UserData.plist")
@@ -38,6 +40,8 @@ class DataManager {
             loadFromAppDirectory()
         }
     }
+    
+    // Loads user information from the App Directory
     
     func loadFromAppDirectory() {
         
@@ -55,6 +59,8 @@ class DataManager {
         }
     }
     
+    // Saves User to Documents directory.
+    
     func saveUserData() {
         
         let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/UserData.plist")
@@ -64,6 +70,8 @@ class DataManager {
         (dictionaryToWrite as NSDictionary).writeToURL(path, atomically: true)
         created = true
     }
+    
+    // Deletes User form Documents directory. Called when account is cancelled, or logged out.
     
     func deleteUserData() {
         
@@ -79,6 +87,40 @@ class DataManager {
             print("Failed to delete UserData file")
         }
     }
+    
+    // Saves FB token string, for fetching FB user data
+    
+    func saveFBTokenString(token : String) -> Bool {
+        
+        
+        let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/FBToken.plist")
+        do {
+            try (token as NSString).writeToURL(path, atomically: true, encoding: NSUTF8StringEncoding)
+        } catch {
+            return false
+        }
+        
+        return true
+    }
+    
+    // Gets the FB Token for retrieving user data from FB server. Should only be called if user is logged in to FB, but has not set up an account.
+    
+    func getFBTokenString() -> String? {
+        
+        let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/FBToken.plist")
+        
+        if(!fileManager.fileExistsAtPath(path.path!)) {
+            return nil
+        }
+        
+        do {
+            return try NSString(contentsOfFile: path.path!, encoding: NSUTF8StringEncoding) as String
+        } catch _ {
+            return nil
+        }
+    }
+    
+    // Builds the Dictionary to write to UserData.plist
     
     func buildDataToWrite() -> Dictionary<String, String> {
         
@@ -98,6 +140,8 @@ class DataManager {
         
         return dictionaryToWrite
     }
+    
+    // I <3 DESCRIPTIVE METHOD NAMES
     
     func saveImageToFile(image : UIImage, name : String) {
         

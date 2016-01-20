@@ -33,6 +33,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
     }
     
+    // Checks login status, and fetches data if needed. THIS NEEDS TO BE BROKEN UP SO BADLY WHERE'S YOKO?
+    
     func checkLogin() {
         var loggedIn = false
         
@@ -47,6 +49,32 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         if FBSDKAccessToken.currentAccessToken() != nil {
             FBLoginButton.enabled = false
             FBLogoutButton.enabled = true
+            if(dataManager.FBResults == nil) {
+                if let check = dataManager.getFBTokenString() {
+                    let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name"], tokenString: check, version: nil, HTTPMethod: "GET")
+                    req.startWithCompletionHandler({ (connection, getResult, error : NSError!) -> Void in
+                        if(error == nil)
+                        {
+                            print("Logged in to FB!")
+                            self.dataManager.FBResults = getResult as? Dictionary<String, String>
+                            
+                            let urlString = "https://graph.facebook.com/\(self.dataManager.FBResults!["id"]!)/picture?type=large"
+                            let requestType = "GET"
+                            let url = NSURL(string: urlString)!
+                            
+                            if let response = HTTPRequests.RequestManager.GetImageResponse(url, requestType: requestType, requestBody: nil) {
+                                self.dataManager.saveImageToFile(response, name: self.dataManager.FBResults!["name"]!)
+                            }
+                            
+                            self.performSegueWithIdentifier("CreateUser", sender: nil)
+                        }
+                        else
+                        {
+                            print("error \(error)")
+                        }
+                    })
+                }
+            }
             loggedIn = true
         } else {
             FBLoginButton.enabled = true
@@ -55,6 +83,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         if(!loggedIn) {
             PlayButton.enabled = false
+            PlayButton.hidden = true
             if let tabBarItems = self.tabBarController?.tabBar.items {
                 tabBarItems[1].enabled = false
             }
@@ -64,6 +93,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let _ = segue.identifier {
             
@@ -90,6 +120,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 
                 User.FBAccessToken = result.token.tokenString
                 User.FBUserID = result.token.userID
+                dataManager.saveFBTokenString(result.token.tokenString)
                 
                 let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name"], tokenString: result.token.tokenString, version: nil, HTTPMethod: "GET")
                 req.startWithCompletionHandler({ (connection, getResult, error : NSError!) -> Void in
@@ -119,6 +150,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
     }
     
+    // MARK: - FBLogin Delegate
+    
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         FBSDKLoginManager().logOut()
         User.FBAccessToken = nil
@@ -129,6 +162,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     func loginButtonWillLogin(loginButton: FBSDKLoginButton!) -> Bool {
         return true
     }
+    
+    // ACTION
 
     @IBAction func FBLogut(sender: AnyObject) {
         FBSDKLoginManager().logOut()
