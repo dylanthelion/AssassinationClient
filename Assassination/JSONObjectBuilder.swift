@@ -23,10 +23,7 @@ class JSONObjectBuilder {
     func jsonMessageStringToDictionary(data: NSData!) -> NSDictionary? {
         
         var returnObject : NSMutableDictionary?
-        var responseString : NSString? = NSString(data: data!, encoding: NSUTF8StringEncoding)
-        let stringLength : Int = responseString!.length
-        responseString = responseString?.substringToIndex(stringLength - 1)
-        responseString = responseString?.substringFromIndex(1)
+        let responseString : NSString? = NSString(data: data!, encoding: NSUTF8StringEncoding)
         let backToData = responseString?.dataUsingEncoding(NSUTF8StringEncoding)
         do
         {
@@ -44,10 +41,7 @@ class JSONObjectBuilder {
     func JSONMessageStringToArray(data: NSData!) -> NSArray? {
         
         var returnObject : NSArray?
-        var responseString : NSString? = NSString(data: data!, encoding: NSUTF8StringEncoding)
-        let stringLength : Int = responseString!.length
-        responseString = responseString?.substringToIndex(stringLength - 1)
-        responseString = responseString?.substringFromIndex(1)
+        let responseString : NSString? = NSString(data: data!, encoding: NSUTF8StringEncoding)
         let backToData = responseString?.dataUsingEncoding(NSUTF8StringEncoding)
         do
         {

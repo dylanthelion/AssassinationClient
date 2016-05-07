@@ -27,6 +27,13 @@
 		745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */; };
 		745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57CB1C43562D001B7CC9 /* StringExtensions.swift */; };
 		745F580A1C448A87001B7CC9 /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F58091C448A87001B7CC9 /* EditUserViewController.swift */; };
+		74C077B91CDD19BB00C70B40 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C077B81CDD19BB00C70B40 /* UserStore.swift */; };
+		74C850A01CE12FD7009C9B65 /* RecoverUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C8509F1CE12FD7009C9B65 /* RecoverUserViewController.swift */; };
+		74C850A31CE25336009C9B65 /* Rally.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74C850A21CE25336009C9B65 /* Rally.storyboard */; };
+		74C850A71CE25396009C9B65 /* MainRallyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850A61CE25396009C9B65 /* MainRallyViewController.swift */; };
+		74C850A91CE58BEA009C9B65 /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850A81CE58BEA009C9B65 /* CreateGameViewController.swift */; };
+		74C850AB1CE58E94009C9B65 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850AA1CE58E94009C9B65 /* Game.swift */; };
+		74C850AD1CE5A10F009C9B65 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850AC1CE5A10F009C9B65 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +81,13 @@
 		745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONObjectBuilder.swift; sourceTree = "<group>"; };
 		745F57CB1C43562D001B7CC9 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		745F58091C448A87001B7CC9 /* EditUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
+		74C077B81CDD19BB00C70B40 /* UserStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
+		74C8509F1CE12FD7009C9B65 /* RecoverUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverUserViewController.swift; sourceTree = "<group>"; };
+		74C850A21CE25336009C9B65 /* Rally.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Rally.storyboard; sourceTree = "<group>"; };
+		74C850A61CE25396009C9B65 /* MainRallyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainRallyViewController.swift; sourceTree = "<group>"; };
+		74C850A81CE58BEA009C9B65 /* CreateGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGameViewController.swift; sourceTree = "<group>"; };
+		74C850AA1CE58E94009C9B65 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		74C850AC1CE5A10F009C9B65 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,14 +142,13 @@
 		745F57721C3FF24B001B7CC9 /* Assassination */ = {
 			isa = PBXGroup;
 			children = (
+				74C850A11CE25312009C9B65 /* Storyboards */,
 				745F57C81C435290001B7CC9 /* Extensions */,
 				745F57B51C4007D5001B7CC9 /* Models */,
 				745F57B21C400429001B7CC9 /* Helpers */,
 				745F57AD1C3FFC6D001B7CC9 /* ViewControllers */,
 				745F57731C3FF24B001B7CC9 /* AppDelegate.swift */,
-				745F57771C3FF24B001B7CC9 /* Main.storyboard */,
 				745F577A1C3FF24B001B7CC9 /* Assets.xcassets */,
-				745F577C1C3FF24B001B7CC9 /* LaunchScreen.storyboard */,
 				745F577F1C3FF24B001B7CC9 /* Info.plist */,
 				745F57A81C3FF73C001B7CC9 /* Header.h */,
 			);
@@ -173,9 +186,8 @@
 		745F57AD1C3FFC6D001B7CC9 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				745F57AE1C3FFCCC001B7CC9 /* LoginViewController.swift */,
-				745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */,
-				745F58091C448A87001B7CC9 /* EditUserViewController.swift */,
+				74C850A51CE25381009C9B65 /* Rally */,
+				74C850A41CE25371009C9B65 /* Account */,
 			);
 			name = ViewControllers;
 			path = ..;
@@ -184,12 +196,14 @@
 		745F57B21C400429001B7CC9 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				74C077B71CDD19AA00C70B40 /* Model */,
 				745F57B31C40043D001B7CC9 /* LoginHelper.swift */,
 				745F57BA1C4068C0001B7CC9 /* DataStore.swift */,
 				745F57BE1C4078E0001B7CC9 /* Constants.swift */,
 				745F57C21C43443D001B7CC9 /* APIManager.swift */,
 				745F57C41C434520001B7CC9 /* HTTPRequestFuncs.swift */,
 				745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */,
+				74C850AC1CE5A10F009C9B65 /* LocationManager.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -198,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				745F57B61C4007E8001B7CC9 /* User.swift */,
+				74C850AA1CE58E94009C9B65 /* Game.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -208,6 +223,44 @@
 				745F57CB1C43562D001B7CC9 /* StringExtensions.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		74C077B71CDD19AA00C70B40 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				74C077B81CDD19BB00C70B40 /* UserStore.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		74C850A11CE25312009C9B65 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				745F577C1C3FF24B001B7CC9 /* LaunchScreen.storyboard */,
+				745F57771C3FF24B001B7CC9 /* Main.storyboard */,
+				74C850A21CE25336009C9B65 /* Rally.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		74C850A41CE25371009C9B65 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				74C8509F1CE12FD7009C9B65 /* RecoverUserViewController.swift */,
+				745F58091C448A87001B7CC9 /* EditUserViewController.swift */,
+				745F57C01C408FDF001B7CC9 /* CreateUserViewController.swift */,
+				745F57AE1C3FFCCC001B7CC9 /* LoginViewController.swift */,
+			);
+			name = Account;
+			sourceTree = "<group>";
+		};
+		74C850A51CE25381009C9B65 /* Rally */ = {
+			isa = PBXGroup;
+			children = (
+				74C850A61CE25396009C9B65 /* MainRallyViewController.swift */,
+				74C850A81CE58BEA009C9B65 /* CreateGameViewController.swift */,
+			);
+			name = Rally;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,6 +375,7 @@
 				745F577E1C3FF24B001B7CC9 /* LaunchScreen.storyboard in Resources */,
 				745F577B1C3FF24B001B7CC9 /* Assets.xcassets in Resources */,
 				745F57791C3FF24B001B7CC9 /* Main.storyboard in Resources */,
+				74C850A31CE25336009C9B65 /* Rally.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,18 +400,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74C850A01CE12FD7009C9B65 /* RecoverUserViewController.swift in Sources */,
 				745F57C31C43443D001B7CC9 /* APIManager.swift in Sources */,
 				745F57B71C4007E8001B7CC9 /* User.swift in Sources */,
 				745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */,
 				745F580A1C448A87001B7CC9 /* EditUserViewController.swift in Sources */,
+				74C850A71CE25396009C9B65 /* MainRallyViewController.swift in Sources */,
+				74C850A91CE58BEA009C9B65 /* CreateGameViewController.swift in Sources */,
 				745F57AF1C3FFCCC001B7CC9 /* LoginViewController.swift in Sources */,
+				74C850AD1CE5A10F009C9B65 /* LocationManager.swift in Sources */,
 				745F57741C3FF24B001B7CC9 /* AppDelegate.swift in Sources */,
 				745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */,
 				745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */,
 				745F57BB1C4068C0001B7CC9 /* DataStore.swift in Sources */,
 				745F57B41C40043D001B7CC9 /* LoginHelper.swift in Sources */,
+				74C850AB1CE58E94009C9B65 /* Game.swift in Sources */,
 				745F57BF1C4078E0001B7CC9 /* Constants.swift in Sources */,
 				745F57C51C434520001B7CC9 /* HTTPRequestFuncs.swift in Sources */,
+				74C077B91CDD19BB00C70B40 /* UserStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

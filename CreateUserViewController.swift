@@ -8,21 +8,16 @@
 
 import UIKit
 
-class CreateUserViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class CreateUserViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, DataStoreDelegate {
 
     @IBOutlet weak var AddPasswordLabel: UILabel!
-    
     @IBOutlet weak var ProfileImageView: UIImageView!
-    
     @IBOutlet weak var EmailTextBox: UITextField!
-    
     @IBOutlet weak var UserNameTextBox: UITextField!
-    
     @IBOutlet weak var PasswordTextBox: UITextField!
-    
     @IBOutlet weak var ChangeProfilePicButton: UIButton!
-    
     @IBOutlet weak var Checkbox: UIButton!
+    
     let dataManager : DataManager = DataManager.AppData
     var checked : Bool = false
     
@@ -37,41 +32,39 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
         if let tabBarItems = self.tabBarController?.tabBar.items {
             tabBarItems[1].enabled = false
         }
+        self.dataManager.delegate = self
     }
     
     func loadUserData() {
         print("Load data")
-        if let _ = dataManager.appUser {
-            
-            if let _ = User.AppUserEmail, _ = User.AppUserName, _ = User.AppUserPassword {
-                print("User exists")
-                EmailTextBox.text = User.AppUserEmail!
-                UserNameTextBox.text = User.AppUserName!
-                PasswordTextBox.text = User.AppUserPassword!
-                
-                if let checkImage = dataManager.loadImageFromFile(User.AppUserName!) {
-                    ProfileImageView.image = checkImage
+        self.dataManager.loadUserData()
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            if let _ = self.dataManager.FBResults {
+                self.ChangeProfilePicButton.hidden = true
+                self.ChangeProfilePicButton.enabled = false
+                self.AddPasswordLabel.hidden = false
+                self.EmailTextBox.text = self.dataManager.FBResults!["email"]!
+                self.UserNameTextBox.text = self.dataManager.FBResults!["name"]!
+                if let checkImage = self.dataManager.loadImageFromFile(self.dataManager.FBResults!["name"]!) {
+                    print("Image found")
+                    self.ProfileImageView.image = checkImage
                 } else {
-                    ProfileImageView.image = UIImage(named: "user.png")
+                    self.ProfileImageView.image = UIImage(named: "user.png")
                 }
-            }
-        } else if let _ = dataManager.FBResults {
-            print("Load FB results")
-            ChangeProfilePicButton.hidden = true
-            ChangeProfilePicButton.enabled = false
-            AddPasswordLabel.hidden = false
-            EmailTextBox.text = dataManager.FBResults!["email"]!
-            UserNameTextBox.text = dataManager.FBResults!["name"]!
-            if let checkImage = dataManager.loadImageFromFile(dataManager.FBResults!["name"]!) {
-                print("Image found")
-                ProfileImageView.image = checkImage
             } else {
-                ProfileImageView.image = UIImage(named: "user.png")
+                self.ChangeProfilePicButton.hidden = true
+                self.ChangeProfilePicButton.enabled = false
             }
-        } else {
-            ChangeProfilePicButton.hidden = true
-            ChangeProfilePicButton.enabled = false
-        }
+        })
+        
+    }
+    
+    func updateInfoMessageLabel(message : String, color: UIColor) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.AddPasswordLabel.text = message
+            self.AddPasswordLabel.textColor = color
+        })
     }
     
     @IBAction func SubmitUser(sender: AnyObject) {
@@ -113,23 +106,14 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
                 return
             }
             
-            let response = APIManager.CreateUser(name, email: email, password: password)
-            
-            if(response.success) {
-                AddPasswordLabel.hidden = true
-                ChangeProfilePicButton.hidden = false
-                ChangeProfilePicButton.enabled = true
-                self.dismissViewControllerAnimated(true, completion: nil)
-            } else {
-                AddPasswordLabel.text = response.message
-                AddPasswordLabel.textColor = UIColor.redColor()
-                AddPasswordLabel.hidden = false
-            }
+            APIManager.CreateUser(name, email: email, password: password)
+            self.AddPasswordLabel.text = "Creating..."
+            self.AddPasswordLabel.textColor = UIColor.orangeColor()
         }
     }
     
     private func AddDeviceToAccount() {
-        
+        print("ADD device")
         if let name = UserNameTextBox.text, email = EmailTextBox.text, password = PasswordTextBox.text {
             
             if(password.characters.count < 10) {
@@ -138,18 +122,9 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
                 return
             }
             
-            let response = APIManager.AddDevice(name, password: password, email: email)
-            
-            if(response.success) {
-                AddPasswordLabel.hidden = true
-                ChangeProfilePicButton.hidden = false
-                ChangeProfilePicButton.enabled = true
-                self.dismissViewControllerAnimated(true, completion: nil)
-            } else {
-                AddPasswordLabel.text = response.message
-                AddPasswordLabel.textColor = UIColor.redColor()
-                AddPasswordLabel.hidden = false
-            }
+            APIManager.AddDevice(name, password: password, email: email)
+            self.AddPasswordLabel.text = "Adding..."
+            self.AddPasswordLabel.textColor = UIColor.orangeColor()
         }
     }
     
@@ -172,17 +147,17 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
         }
         
         if let _ = imageToPost {
-            let HTTPManager = HTTPRequests.RequestManager
+            //let HTTPManager = HTTPRequests.RequestManager
             let url = dataManager.PostImageURL
             if let _ = url {
-                let response = HTTPManager.postImage(url!, image: imageToPost!)
+                /*let response = HTTPManager.postImage(url!, image: imageToPost!)
                 if(response.0) {
                     dataManager.saveProfilePic(imageToPost!)
                     ProfileImageView.image = imageToPost!
                 } else {
                     print(response.1)
                     return
-                }
+                }*/
             }
             
         }
@@ -199,4 +174,22 @@ class CreateUserViewController: UIViewController, UIImagePickerControllerDelegat
         return true
     }
     
+    // MARK : - DataStoreDelegate
+    
+    func ModelDidUpdate(message : String?) {
+        
+        if let _ = message {
+            let textColor : UIColor
+            if message! == "Success!" {
+                textColor = UIColor.greenColor()
+            } else {
+                textColor = UIColor.redColor()
+            }
+            self.updateInfoMessageLabel(message!, color: textColor)
+        } else if !self.dataManager.userStore.isValidUser {
+            self.updateInfoMessageLabel("Create an account!", color: UIColor.greenColor())
+        } else {
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+    }
 }
