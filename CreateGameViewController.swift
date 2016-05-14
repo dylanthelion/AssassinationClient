@@ -24,6 +24,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     
     var pickerViewDoneButton : UIBarButtonItem?
     var mapViewDoneButton : UIBarButtonItem?
+    var datePickerDoneButton : UIBarButtonItem?
     
     var mapView : MKMapView?
     
@@ -59,6 +60,8 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
             textField.inputView = picker
         case 5:
             print("Call date picker")
+            self.disableTextFieldsForCustomInputView(5)
+            self.showDatePicker(textField)
         default:
             print("Not a custom view")
         }
@@ -158,6 +161,21 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         self.disableTextFieldsForCustomInputView(12)
     }
     
+    func showDatePicker(sender : UITextField) {
+        let datePickerView:UIDatePicker = UIDatePicker()
+        datePickerView.datePickerMode = UIDatePickerMode.DateAndTime
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: #selector(CreateGameViewController.datePickerChangedDate(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.addDatePickerDoneButton()
+    }
+    
+    func datePickerChangedDate(sender : UIDatePicker) {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        self.DateTextField.text = dateFormatter.stringFromDate(sender.date)
+    }
+    
     func ModelDidUpdate(message: String?) {
         
     }
@@ -183,6 +201,11 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         self.navigationItem.rightBarButtonItem = self.pickerViewDoneButton!
     }
     
+    func addDatePickerDoneButton() {
+        self.datePickerDoneButton = UIBarButtonItem(title: "DONE", style: .Plain, target: self, action: #selector(CreateGameViewController.dismissDatePicker))
+        self.navigationItem.rightBarButtonItem = self.datePickerDoneButton!
+    }
+    
     func dismissPickerView() {
         switch self.currentlySelectedPickerView! {
         case 0:
@@ -205,6 +228,13 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         self.mapView = nil
         self.navigationItem.rightBarButtonItem = nil
         self.mapViewDoneButton = nil
+        self.enableTextViews()
+    }
+    
+    func dismissDatePicker() {
+        self.DateTextField.resignFirstResponder()
+        self.navigationItem.rightBarButtonItem = nil
+        self.datePickerDoneButton = nil
         self.enableTextViews()
     }
     
@@ -264,6 +294,10 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
             self.NumberOfPlayersTextField.userInteractionEnabled = false
             self.DateTextField.userInteractionEnabled = false
             self.FromMapButton.userInteractionEnabled = false
+        } else if enabledViewTag == 5 {
+            self.NumberOfPlayersTextField.userInteractionEnabled = false
+            self.FromMapButton.userInteractionEnabled = false
+            self.GameTypeTextField.userInteractionEnabled = false
         } else if enabledViewTag == 12 {
             self.NumberOfPlayersTextField.userInteractionEnabled = false
             self.DateTextField.userInteractionEnabled = false
@@ -278,6 +312,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         self.DateTextField.userInteractionEnabled = true
         self.NumberOfPlayersTextField.userInteractionEnabled = true
         self.RadiusTextField.userInteractionEnabled = true
+        self.FromMapButton.userInteractionEnabled = true
     }
     
 }
