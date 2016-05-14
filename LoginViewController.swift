@@ -8,19 +8,15 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, DataStoreDelegate {
     
     let facebookReadPermissions = ["public_profile", "email", "user_friends", "user_hometown"]
-    
     let dataManager : DataManager = DataManager.AppData
 
     @IBOutlet weak var FBLoginButton: FBSDKLoginButton!
-    
     @IBOutlet weak var FBLogoutButton: UIButton!
     @IBOutlet weak var CreateUserButton: UIButton!
-    
     @IBOutlet weak var PlayButton: UIButton!
-    
     @IBOutlet weak var ProfilePicImage: UIImageView!
     
     override func viewDidLoad() {
@@ -29,24 +25,35 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         FBLoginButton.delegate = self
         FBLoginButton.readPermissions = self.facebookReadPermissions
         
-        checkLogin()
+        //checkLogin()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.dataManager.delegate = self
+        checkLogin()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.dataManager.delegate = nil
     }
     
     // Checks login status, and fetches data if needed. THIS NEEDS TO BE BROKEN UP SO BADLY WHERE'S YOKO?
     
     func checkLogin() {
         var loggedIn = false
-        
-        if let _ = dataManager.appUser {
+        self.dataManager.loadUserDataSync()
+        if let check = dataManager.userStore.user {
+            print("User found!")
             CreateUserButton.enabled = false
             loggedIn = true
-            if let checkImage = dataManager.loadImageFromFile(User.AppUserName!) {
+            if let checkImage = dataManager.loadImageFromFile(check.Name!) {
                 ProfilePicImage.image = checkImage
             }
-        }
-        
-        if FBSDKAccessToken.currentAccessToken() != nil {
+            
+        } else if FBSDKAccessToken.currentAccessToken() != nil {
             FBLoginButton.enabled = false
             FBLogoutButton.enabled = true
             if(dataManager.FBResults == nil) {
@@ -87,6 +94,12 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             if let tabBarItems = self.tabBarController?.tabBar.items {
                 tabBarItems[1].enabled = false
             }
+        } else {
+            PlayButton.enabled = true
+            PlayButton.hidden = false
+            if let tabBarItems = self.tabBarController?.tabBar.items {
+                tabBarItems[1].enabled = true
+            }
         }
     }
 
@@ -98,6 +111,13 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         if let _ = segue.identifier {
             
         }
+    }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == "CreateUser" && self.dataManager.userStore.isValidUser {
+            return false
+        }
+        return true
     }
     
     // MARK: - FBLoginDelegate
@@ -117,9 +137,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 }
             }
             if allPermsGranted {
-                
-                User.FBAccessToken = result.token.tokenString
-                User.FBUserID = result.token.userID
+                self.dataManager.userStore.addFBResultsToUser(result.token.tokenString, id: result.token.userID)
                 dataManager.saveFBTokenString(result.token.tokenString)
                 
                 let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name"], tokenString: result.token.tokenString, version: nil, HTTPMethod: "GET")
@@ -154,9 +172,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
         FBSDKLoginManager().logOut()
-        User.FBAccessToken = nil
-        User.FBUserID = nil
-        dataManager.deleteUserData()
+        self.dataManager.userStore.logoutUserFB()
+        //dataManager.deleteUserData()
     }
     
     func loginButtonWillLogin(loginButton: FBSDKLoginButton!) -> Bool {
@@ -169,5 +186,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         FBSDKLoginManager().logOut()
         FBLoginButton.enabled = true
         FBLogoutButton.enabled = false
+    }
+    
+    func ModelDidUpdate(message: String?) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.checkLogin()
+        })
     }
 }

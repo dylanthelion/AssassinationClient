@@ -10,15 +10,16 @@ import Foundation
 
 private let manager = DataManager()
 
-class DataManager {
+class DataManager : UserStoreDelegate {
     
     let fileManager = NSFileManager.defaultManager()
-    var appUser : User?
+    let userStore = UserStore.currentUser
     var created : Bool = false
     var FBResults : Dictionary<String, String>?
-    
+    var delegate : DataStoreDelegate?
     
     init() {
+        self.userStore.delegate = self
         loadUserData()
     }
     
@@ -34,35 +35,50 @@ class DataManager {
     // Loads user data. Called automatically from the login screen.
     
     func loadUserData() {
-        
-        let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/UserData.plist")
-        if(fileManager.fileExistsAtPath(path.path!)) {
-            loadFromAppDirectory()
+        dispatch_async(dispatch_get_main_queue(), {
+            let path = self.DocumentsDirectoryPath.URLByAppendingPathComponent("UserData.plist")
+            if(self.fileManager.fileExistsAtPath(path.path!)) {
+                self.loadFromAppDirectory()
+            }
+            return
+        })
+    }
+    
+    // BE CAREFUL! Loading sync from a singleton can cause blocks and read errors
+    
+    func loadUserDataSync() {
+        let path = self.DocumentsDirectoryPath.URLByAppendingPathComponent("UserData.plist")
+        if(self.fileManager.fileExistsAtPath(path.path!)) {
+            self.loadFromAppDirectory()
         }
     }
     
     // Loads user information from the App Directory
     
     func loadFromAppDirectory() {
-        
+        // If user has already been created, skip loading
+        if self.userStore.isValidUser {
+            return
+        } else {
+            self.userStore.user = nil
+        }
+        print("Load user")
         let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/UserData.plist")
         let dataEntry = NSDictionary(contentsOfFile: path.path!) as! Dictionary<String, String>
-        
         if let checkID = dataEntry["ID"], checkName = dataEntry["Name"], checkEmail = dataEntry["Email"], checkPassword = dataEntry["Password"] {
-            appUser = User(setID: Int(checkID)!, setName: checkName, setEmail: checkEmail, setPassword: checkPassword)
+            if let _ = dataEntry["FBToken"], _ = dataEntry["FBID"] {
+                self.userStore.CreateUserFromProperties(Int(checkID)!, name: checkName, email: checkEmail, password: checkPassword, fbToken: dataEntry["FBToken"], fbId: dataEntry["FBID"])
+            } else {
+                self.userStore.CreateUserFromProperties(Int(checkID)!, name: checkName, email: checkEmail, password: checkPassword, fbToken: nil, fbId: nil)
+            }
             created = true
-        }
-        
-        if let _ = dataEntry["FBToken"], _ = dataEntry["FBID"] {
-            User.FBAccessToken = dataEntry["FBToken"]
-            User.FBUserID = dataEntry["FBID"]
+            self.UserCreated(self.userStore.user!)
         }
     }
     
     // Saves User to Documents directory.
     
     func saveUserData() {
-        
         let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/UserData.plist")
         
         let dictionaryToWrite = buildDataToWrite()
@@ -126,14 +142,14 @@ class DataManager {
         
         var dictionaryToWrite = [String:String]()
         
-        if let _ = appUser {
-            dictionaryToWrite["ID"] = String(User.AppUserID!)
-            dictionaryToWrite["Name"] = User.AppUserName!
-            dictionaryToWrite["Email"] = User.AppUserEmail!
-            dictionaryToWrite["Password"] = User.AppUserPassword!
-            if let _ = User.FBAccessToken, _ = User.FBUserID {
-                dictionaryToWrite["FBToken"] = User.FBAccessToken!
-                dictionaryToWrite["FBID"] = User.FBUserID!
+        if let check = self.userStore.user {
+            dictionaryToWrite["ID"] = String(check.ID!)
+            dictionaryToWrite["Name"] = check.Name!
+            dictionaryToWrite["Email"] = check.Email!
+            dictionaryToWrite["Password"] = check.Password!
+            if let _ = check.FBAccessToken, _ = check.FBUserID {
+                dictionaryToWrite["FBToken"] = check.FBAccessToken!
+                dictionaryToWrite["FBID"] = check.FBUserID!
             }
             
         }
@@ -177,21 +193,52 @@ class DataManager {
     }
     
     func saveProfilePic(image : UIImage) {
-        if let _ = appUser {
-            saveImageToFile(image, name: User.AppUserName!)
+        if let check = self.userStore.user {
+            saveImageToFile(image, name: check.Name!)
+        }
+    }
+    
+    // Store Delegates
+    // MARK: - User Store
+    
+    func UserCreated(user: User) {
+        if let _ = self.delegate {
+            self.delegate?.ModelDidUpdate("Success!")
+        }
+    }
+    
+    func UserDeleted() {
+        if let _ = self.delegate {
+            self.delegate?.ModelDidUpdate("Deleted!")
+        }
+    }
+    
+    func UserUpdated(newUser: User) {
+        if let _ = self.delegate {
+            self.delegate?.ModelDidUpdate("Success!")
+        }
+    }
+    
+    func UserAPIActionFailed(message : String?) {
+        if let _ = self.delegate {
+            if let _ = message {
+                self.delegate?.ModelDidUpdate(message!)
+            } else {
+                self.delegate?.ModelDidUpdate("Something went wrong")
+            }
         }
     }
     
     // API URLs
     
     var CreateUserURL : NSURL? {
-        return NSURL(string: String(format: "%@/Account/CreateUser?UUID=%@", Constants.API_URL, UIDevice.currentDevice().identifierForVendor!.UUIDString))
+        return NSURL(string: String(format: "%@Account/CreateUser?UUID=%@", Constants.API_URL, UIDevice.currentDevice().identifierForVendor!.UUIDString))
     }
     
     var EditUserURL : NSURL? {
         
-        if let _ = appUser {
-            return NSURL(string: String(format: "%@/Account/EditUser?id=%@", Constants.API_URL, String(User.AppUserID)))
+        if let check = self.userStore.user {
+            return NSURL(string: String(format: "%@Account/EditUser?id=%@", Constants.API_URL, String(check.ID!)))
         }
         
         return nil
@@ -199,8 +246,8 @@ class DataManager {
     
     var DeleteUserURL : NSURL? {
         
-        if let _ = appUser {
-            return NSURL(string: String(format: "%@/Account/DeleteUser?playerID=%@&email=%@&password=%@", Constants.API_URL, String(User.AppUserID!), User.AppUserEmail!, User.AppUserPassword!))
+        if let check = self.userStore.user {
+            return NSURL(string: String(format: "%@Account/DeleteUser?playerID=%@&email=%@&password=%@", Constants.API_URL, String(check.ID!), check.Email!, check.Password!))
         }
         
         return nil
@@ -208,14 +255,26 @@ class DataManager {
     
     var PostImageURL : NSURL? {
         
-        if let _ = appUser {
-            return NSURL(string: String(format: "%@/Image/SetImage?playerID=%@&password=%@", Constants.API_URL, String(User.AppUserID!), User.AppUserPassword!))
+        if let check = self.userStore.user {
+            return NSURL(string: String(format: "%@Image/SetImage?playerID=%@&password=%@", Constants.API_URL, String(check.ID!), check.Password!))
         }
         
         return nil
     }
     
-    class func AddDeviceURL(name: String, password : String) -> NSURL? {
-            return NSURL(string: String(format: "%@/Device/AddDeviceToAccount?userName=%@&password=%@&UUID=%@", Constants.API_URL, name, password, UIDevice.currentDevice().identifierForVendor!.UUIDString))
+    func AddDeviceURL(name: String, password : String) -> NSURL? {
+        return NSURL(string: String(format: "%@Device/AddDeviceToAccount?userName=%@&password=%@&UUID=%@", Constants.API_URL, name, password, UIDevice.currentDevice().identifierForVendor!.UUIDString).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
     }
+    
+    func ChangePasswordURL(name: String, oldPassword: String, newPassword: String, email: String, id: String) -> NSURL? {
+        return NSURL(string: String(format: "%@ManageAccount/ChangePassword?playerID=%@&userName=%@&email=%@&oldPassword=%@&newPassword=%@", Constants.API_URL, id, name, email, oldPassword, newPassword).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+    
+    func GetUserDataWithEmailURL(email: String, password: String) -> NSURL? {
+        return NSURL(string: String(format: "%@ManageAccount/GetUserDataWithEmail?email=%@&password=%@", Constants.API_URL, email, password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+}
+
+protocol DataStoreDelegate {
+    func ModelDidUpdate(message : String?)
 }
