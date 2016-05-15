@@ -229,6 +229,16 @@ class DataManager : UserStoreDelegate {
         }
     }
     
+    func UserAPIActionSuccessful(message : String?) {
+        if let _ = self.delegate {
+            if let _ = message {
+                self.delegate?.ModelDidUpdate(message!)
+            } else {
+                self.delegate?.ModelDidUpdate("Problem parsing response")
+            }
+        }
+    }
+    
     // API URLs
     
     var CreateUserURL : NSURL? {
@@ -272,6 +282,10 @@ class DataManager : UserStoreDelegate {
     
     func GetUserDataWithEmailURL(email: String, password: String) -> NSURL? {
         return NSURL(string: String(format: "%@ManageAccount/GetUserDataWithEmail?email=%@&password=%@", Constants.API_URL, email, password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+    
+    func CreateGameURL(playerId : Int, password : String) -> NSURL? {
+        return NSURL(string: String(format: "%@Game/CreateGame?playerID=%@&password=%@", Constants.API_URL, String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
     }
 }
 

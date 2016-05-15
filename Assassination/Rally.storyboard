@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Shh-oA-ZxV">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
@@ -30,14 +31,8 @@
                                     <outlet property="delegate" destination="0bB-ce-xgt" id="P51-0Q-e9x"/>
                                 </connections>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xlc-X2-Bxa">
-                                <rect key="frame" x="20" y="528" width="560" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DgA-wK-wSS">
-                                <rect key="frame" x="252" y="469" width="96" height="30"/>
+                                <rect key="frame" x="252" y="514" width="96" height="30"/>
                                 <state key="normal" title="Submit!"/>
                                 <connections>
                                     <action selector="SubmitButtonPressed:" destination="0bB-ce-xgt" eventType="touchUpInside" id="sfo-da-NFO"/>
@@ -120,6 +115,26 @@
                                     <action selector="FromMapButtonPressed:" destination="0bB-ce-xgt" eventType="touchUpInside" id="hDa-Di-M5o"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Game Length in Minutes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKs-MJ-aUW">
+                                <rect key="frame" x="20" y="475" width="200" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A1X-05-tKP">
+                                <rect key="frame" x="240" y="471" width="340" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="0bB-ce-xgt" id="ubv-f4-CxR"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xlc-X2-Bxa">
+                                <rect key="frame" x="20" y="559" width="560" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -129,6 +144,7 @@
                         <outlet property="DateTextField" destination="ANa-S7-u72" id="cEJ-Nm-8dC"/>
                         <outlet property="ErrorLabel" destination="Xlc-X2-Bxa" id="DsF-cq-WcR"/>
                         <outlet property="FromMapButton" destination="M3E-Nc-Anu" id="RW2-rc-HHM"/>
+                        <outlet property="GameLengthTextField" destination="A1X-05-tKP" id="gfU-GN-jt1"/>
                         <outlet property="GameTypeTextField" destination="th4-bG-RrB" id="wdS-Dp-wur"/>
                         <outlet property="LocationDescriptionTextField" destination="oQq-CY-813" id="L8w-OQ-NiB"/>
                         <outlet property="NumberOfPlayersTextField" destination="pzs-A4-bLz" id="ebZ-uq-YC8"/>
