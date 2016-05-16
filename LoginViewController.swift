@@ -43,7 +43,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, DataStore
     // Checks login status, and fetches data if needed. THIS NEEDS TO BE BROKEN UP SO BADLY WHERE'S YOKO?
     
     func checkLogin() {
-        var loggedIn = false
+        var loggedIn = true
         self.dataManager.loadUserDataSync()
         if let check = dataManager.userStore.user {
             print("User found!")
