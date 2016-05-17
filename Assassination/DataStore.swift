@@ -14,6 +14,7 @@ class DataManager : UserStoreDelegate {
     
     let fileManager = NSFileManager.defaultManager()
     let userStore = UserStore.currentUser
+    let gameStore = GameStore.AppGameStore
     var created : Bool = false
     var FBResults : Dictionary<String, String>?
     var delegate : DataStoreDelegate?
@@ -286,6 +287,10 @@ class DataManager : UserStoreDelegate {
     
     func CreateGameURL(playerId : Int, password : String) -> NSURL? {
         return NSURL(string: String(format: "%@Game/CreateGame?playerID=%@&password=%@", Constants.API_URL, String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+    
+    var GetAllGamesURL : NSURL? {
+        return NSURL(string: String(format: "%@Rally/AllGames", Constants.API_URL))
     }
 }
 
