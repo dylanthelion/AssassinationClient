@@ -22,6 +22,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     @IBOutlet weak var ErrorLabel: UILabel!
     @IBOutlet weak var DateTextField: UITextField!
     
+    @IBOutlet weak var GameLengthTextField: UITextField!
     var pickerViewDoneButton : UIBarButtonItem?
     var mapViewDoneButton : UIBarButtonItem?
     var datePickerDoneButton : UIBarButtonItem?
@@ -31,6 +32,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     var dataStore : DataManager = DataManager.AppData
     var locationManager : LocationManager = LocationManager.sharedManager
     var currentlySelectedPickerView : Int?
+    var currentlySelectedLocation : [CLLocationDegrees]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,6 +144,56 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     }
     
     @IBAction func SubmitButtonPressed(sender: AnyObject) {
+        if(self.currentlySelectedLocation == nil) {
+            CLGeocoder().geocodeAddressString(self.AddressTextField.text!, completionHandler: {(placemarks, error) -> Void in
+                if error != nil {
+                    print("Reverse geocoder failed with error" + error!.localizedDescription)
+                    self.updateInfoMessageLabel(error!.localizedDescription, color: UIColor.redColor())
+                    return
+                }
+                
+                if placemarks!.count > 0 {
+                    let pm = placemarks![0]
+                    let address = pm.location?.coordinate
+                    self.currentlySelectedLocation = [(address?.latitude)!, (address?.longitude)!]
+                }
+            })
+        }
+        if self.currentlySelectedLocation == nil {
+            self.updateInfoMessageLabel("Problem getting coordinate from address string. Try using map", color: UIColor.redColor())
+            return
+        }
+        let game = Game()
+        let locationCoordinate : [CLLocationDegrees] = self.currentlySelectedLocation!
+        var description : String = self.LocationDescriptionTextField.text!
+        if description == "" {
+            description = "None"
+        }
+        
+        let numberOfPlayers : Int = Int((self.NumberOfPlayersTextField.text! as NSString).intValue)
+        let radiusInMeters : Int = Int((self.RadiusTextField.text! as NSString).intValue)
+        let gameLength : Int = Int((self.GameLengthTextField.text! as NSString).intValue)
+        if (numberOfPlayers < 5 || radiusInMeters < 100 || gameLength < 10) {
+            self.updateInfoMessageLabel("Problems parsing numerical fields. Players must be 5, Radius must 100, length must be 10", color: UIColor.redColor())
+            return
+        }
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+        let startTime : NSDate? = dateFormatter.dateFromString(self.DateTextField.text!)
+        if startTime == nil {
+            self.updateInfoMessageLabel("Please enter a valid date", color: UIColor.redColor())
+            return
+        }
+        
+        game.description = description
+        game.locationCoordinate = locationCoordinate
+        game.gameLength = gameLength
+        game.numberOfPlayers = numberOfPlayers
+        game.radiusInMeters = radiusInMeters
+        game.startTime = startTime!
+        self.updateInfoMessageLabel("Creating...", color: UIColor.orangeColor())
+        APIManager.CreateGame(game)
     }
     
     func addMap() {
@@ -172,12 +224,20 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     func datePickerChangedDate(sender : UIDatePicker) {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
         self.DateTextField.text = dateFormatter.stringFromDate(sender.date)
     }
     
     func ModelDidUpdate(message: String?) {
-        
+        if let _ = message {
+            let color : UIColor
+            if message! == "Success!" {
+                color = UIColor.greenColor()
+            } else {
+                color = UIColor.redColor()
+            }
+            self.updateInfoMessageLabel(message!, color: color)
+        }
     }
     
     func createPickerViewWithOptions(ofType type : Int) -> UIPickerView {
@@ -251,6 +311,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         if tapEvent.state != UIGestureRecognizerState.Ended {
             let touchLocation = tapEvent.locationInView(self.mapView)
             let locationCoordinate = self.mapView!.convertPoint(touchLocation,toCoordinateFromView: self.mapView!)
+            self.currentlySelectedLocation = [locationCoordinate.latitude, locationCoordinate.longitude]
             let locationToSet = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
             self.convertCoordFromMapToAddress(locationToSet)
         }
@@ -262,7 +323,6 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         self.mapView?.addAnnotation(placemark)
         
         CLGeocoder().reverseGeocodeLocation(coord, completionHandler: {(placemarks, error) -> Void in
-            print(coord)
             
             if error != nil {
                 print("Reverse geocoder failed with error" + error!.localizedDescription)
@@ -286,6 +346,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         self.AddressTextField.userInteractionEnabled = false
         self.LocationDescriptionTextField.userInteractionEnabled = false
         self.RadiusTextField.userInteractionEnabled = false
+        self.GameLengthTextField.userInteractionEnabled = false
         if enabledViewTag == 2 {
             self.GameTypeTextField.userInteractionEnabled = false
             self.DateTextField.userInteractionEnabled = false
@@ -313,6 +374,14 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         self.NumberOfPlayersTextField.userInteractionEnabled = true
         self.RadiusTextField.userInteractionEnabled = true
         self.FromMapButton.userInteractionEnabled = true
+        self.GameLengthTextField.userInteractionEnabled = true
+    }
+    
+    func updateInfoMessageLabel(message : String, color: UIColor) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.ErrorLabel.text = message
+            self.ErrorLabel.textColor = color
+        })
     }
     
 }

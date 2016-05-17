@@ -134,4 +134,38 @@ class APIManager {
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
         })
     }
+    
+    class func CreateGame(game : Game) {
+        
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.CreateGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!)
+        let requestType = "POST"
+        var body = Dictionary<String, AnyObject>()
+        body["ID"] = game.id!
+        body["Location"] = ["ID" : 0, "Latitude" : game.locationCoordinate![0], "Longitude" : game.locationCoordinate![1], "Altitude" : 0]
+        body["LocationDescription"] = game.description!
+        body["NumberOfPlayers"] = game.numberOfPlayers!
+        body["RadiusInMeteres"] = game.radiusInMeters!
+        let dateFormatter  = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        body["StartTime"] = dateFormatter.stringFromDate(game.startTime!)
+        body["IsActiveGame"] = game.isActiveGame!
+        body["GameLengthInMinutes"] = game.gameLength!
+        body["GameType"] = game.gameType!.rawValue
+        
+        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: body, completion: {(parsedResponse : [String]) -> Void in
+            print("Handling")
+            if(parsedResponse[0] as NSString).substringToIndex(4) == "Game" {
+                print("Success!")
+                DataManager.AppData.UserAPIActionSuccessful("Success!")
+            } else {
+                print("Failed")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+            }
+        })
+    }
 }
