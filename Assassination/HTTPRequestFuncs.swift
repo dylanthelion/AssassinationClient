@@ -94,6 +94,39 @@ class HTTPRequests {
         }
     }
     
+    func GetJSONArrayOfObjectsResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?, completion : (parsedResponse : [AnyObject]) -> Void) {
+        print("URL: \(url)")
+        if let _ = url {
+            
+            let request = BuildURLRequest(url, requestType: requestType, requestBody: requestBody)
+            print("URL: \(request?.URL!)")
+            print("TYPE: \(request?.HTTPMethod)")
+            print("Headers: \(request?.allHTTPHeaderFields!)")
+            let session = NSURLSession.sharedSession()
+            
+            let task = session.dataTaskWithRequest(request!, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                guard data != nil else {
+                    print("no data found: \(error)")
+                    return
+                }
+                
+                if let _ = data {
+                    let checkData = self.JSONBuilder.JSONMessageStringToArray(data!)
+                    if let _ = checkData {
+                        print("Decoded data: \(checkData!)")
+                        completion(parsedResponse: checkData as! [AnyObject])
+                    } else {
+                        let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                        print("String data: \(jsonStr!)")
+                    }
+                }
+            })
+            
+            task.resume()
+        }
+    }
+    
     func GetImageResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?) -> UIImage? {
         
         var returnObject : UIImage?

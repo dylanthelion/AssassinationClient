@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class APIManager {
     
@@ -165,6 +166,41 @@ class APIManager {
             } else {
                 print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+            }
+        })
+    }
+    
+    class func GetAllGames() {
+        let dataManager = DataManager.AppData
+        let url = DataManager.AppData.GetAllGamesURL
+        let requestType = "GET"
+        HTTPRequests.RequestManager.GetJSONArrayOfObjectsResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [AnyObject]) -> Void in
+            print("Handling")
+            if let _ = parsedResponse[0] as? NSDictionary {
+                print("Success! Is string.")
+                for game in parsedResponse {
+                    let parsedGame = game as! NSDictionary
+                    let parsedLocation = parsedGame["Location"] as! NSDictionary
+                    let gameToLoad = Game()
+                    gameToLoad.description = parsedGame["LocationDescription"]! as? String
+                    gameToLoad.gameLength = parsedGame["GameLengthInMinutes"]! as? Int
+                    gameToLoad.gameType = GameType(rawValue: (parsedGame["GameType"]! as? Int)!)
+                    gameToLoad.id = parsedGame["ID"]! as? Int
+                    gameToLoad.isActiveGame = parsedGame["IsActiveGame"]! as? Bool
+                    gameToLoad.locationCoordinate = [CLLocationDegrees(parsedLocation["Latitude"]! as! Double),  CLLocationDegrees(parsedLocation["Longitude"]! as! Double)]
+                    gameToLoad.numberOfPlayers = parsedGame["NumberOfPlayers"]! as? Int
+                    gameToLoad.radiusInMeters = parsedGame["RadiusInMeters"]! as? Int
+                    let dateFormatter = NSDateFormatter()
+                    print("Unparsed start time: \(parsedGame["StartTime"]! as! String)")
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                    gameToLoad.startTime = dateFormatter.dateFromString(parsedGame["StartTime"]! as! String)
+                    print("Loaded start time: \(gameToLoad.startTime)")
+                    dataManager.gameStore.addGameToRally(gameToLoad)
+                    dataManager.UserAPIActionSuccessful("Success!")
+                }
+            } else {
+                dataManager.UserAPIActionFailed("Failed to load games from server")
+                print("Failed")
             }
         })
     }
