@@ -292,6 +292,10 @@ class DataManager : UserStoreDelegate {
     var GetAllGamesURL : NSURL? {
         return NSURL(string: String(format: "%@Rally/AllGames", Constants.API_URL))
     }
+    
+    func EditGameURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
+        return NSURL(string: String(format: "%@Game/EditGame?playerID=%@&password=%@&gameID=%@", Constants.API_URL, String(playerId), password, String(gameId)).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
 }
 
 protocol DataStoreDelegate {

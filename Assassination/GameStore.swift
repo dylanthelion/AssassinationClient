@@ -24,6 +24,9 @@ class GameStore {
     
     func addGameToRally(game : Game) {
         if let _ = games {
+            if ((games?.contains({ return $0.id == game.id })) != nil) {
+                return
+            }
             games!.append(game)
         } else {
             games = [game]

@@ -72,7 +72,10 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("Call game details view")
+        let detailsVC = self.storyboard?.instantiateViewControllerWithIdentifier("GameDetailsViewController") as! GameDetailsViewController
+        let game = self.allGames![indexPath.row]
+        detailsVC.game = game
+        self.navigationController?.pushViewController(detailsVC, animated: true)
     }
     
     func ModelDidUpdate(message: String?) {
@@ -83,8 +86,10 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
         })
     }
     
-    func PresentEditGameView(gameId : Int) {
-        print("Present game: \(gameId)")
+    func PresentEditGameView(game : Game) {
+        let editGameVC = self.storyboard?.instantiateViewControllerWithIdentifier("EditGameVC") as! EditGameViewController
+        editGameVC.game = game
+        self.navigationController?.pushViewController(editGameVC, animated: true)
     }
     
     func PresentMapForLocation(location : CLLocationCoordinate2D, description : String) {
