@@ -36,7 +36,6 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.startLocating(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -230,6 +229,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     }
     
     func ModelDidUpdate(message: String?) {
+        print("Model updated!")
         if let _ = message {
             let color : UIColor
             if message! == "Success!" {

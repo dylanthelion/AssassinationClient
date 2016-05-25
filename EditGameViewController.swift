@@ -31,14 +31,24 @@ class EditGameViewController: CreateGameViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.dataStore.delegate = self
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        self.dataStore.delegate = nil
     }
     
     override func ModelDidUpdate(message: String?) {
-        
+        if let _ = message {
+            let color : UIColor
+            if message! == "Success!" {
+                color = UIColor.greenColor()
+            } else {
+                color = UIColor.redColor()
+            }
+            self.updateInfoMessageLabel(message!, color: color)
+        }
     }
     
     func setUp() {
@@ -85,6 +95,25 @@ class EditGameViewController: CreateGameViewController {
         if let _ = self.game?.locationCoordinate {
             self.currentlySelectedLocation = self.game!.locationCoordinate!
         }
+    }
+    
+    @IBAction func Delete(sender: AnyObject) {
+        if !self.dataStore.userStore.isValidUser || self.game == nil {
+            self.updateInfoMessageLabel("Account or game invalid", color: UIColor.redColor())
+            return
+        }
+        let alertVC = UIAlertController(title: "Delete Game", message: "Are you sure?", preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            print("Delete cancelled")
+        }
+        alertVC.addAction(cancelAction)
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            print("setup delete")
+            self.updateInfoMessageLabel("Deleting...", color: UIColor.orangeColor())
+            APIManager.DeleteGame(self.game!.id!)
+        }
+        alertVC.addAction(OKAction)
+        self.presentViewController(alertVC, animated: true, completion: nil)
     }
     
     @IBAction func Edit(sender: AnyObject) {
@@ -274,6 +303,7 @@ class EditGameViewController: CreateGameViewController {
     }
     
     override func updateInfoMessageLabel(message : String, color: UIColor) {
+        print("View updated!")
         dispatch_async(dispatch_get_main_queue(), {
             self.EditErrorLabel.text = message
             self.EditErrorLabel.textColor = color

@@ -119,4 +119,11 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
         self.navigationItem.rightBarButtonItem = nil
         self.mapViewDoneButton = nil
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier! == "CreateGameSegue" {
+            let destinationVC = segue.destinationViewController as! CreateGameViewController
+            destinationVC.locationManager.startLocating(destinationVC)
+        }
+    }
 }

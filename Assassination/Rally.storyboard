@@ -171,7 +171,7 @@
                                 <rect key="frame" x="224" y="519" width="153" height="30"/>
                                 <state key="normal" title="Create Game"/>
                                 <connections>
-                                    <segue destination="0bB-ce-xgt" kind="show" id="oHz-nb-9tS"/>
+                                    <segue destination="0bB-ce-xgt" kind="show" identifier="CreateGameSegue" id="oHz-nb-9tS"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0XF-rf-RtL">
@@ -448,6 +448,13 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jkf-h0-g4M">
+                                <rect key="frame" x="441" y="453" width="103" height="30"/>
+                                <state key="normal" title="Delete"/>
+                                <connections>
+                                    <action selector="Delete:" destination="eGW-83-LlH" eventType="touchUpInside" id="2fv-c6-aHJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
