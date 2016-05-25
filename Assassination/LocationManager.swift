@@ -23,11 +23,12 @@ class LocationManager: CLLocationManager {
         
             self.delegate = delegate
         
-                    if(!isLocating) {
+            if(!isLocating) {
                     self.requestAlwaysAuthorization()
                     self.desiredAccuracy = kCLLocationAccuracyBest
                     self.startUpdatingLocation()
                     isLocating = true
+                    print("Locating")
             }
     }
 }

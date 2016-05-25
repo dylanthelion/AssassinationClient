@@ -44,6 +44,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, DataStore
     
     func checkLogin() {
         var loggedIn = false
+        if !dataManager.userStore.isValidUser {
+            dataManager.userStore.user = nil
+        }
         self.dataManager.loadUserDataSync()
         if let check = dataManager.userStore.user {
             print("User found!")

@@ -240,4 +240,24 @@ class APIManager {
             }
         })
     }
+    
+    class func DeleteGame(gameId : Int) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.DeleteGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let requestType = "DELETE"
+        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
+            print("Handling")
+            if(parsedResponse[0] as NSString) == "Deleted!" {
+                print("Success!")
+                DataManager.AppData.UserAPIActionSuccessful("Success!")
+            } else {
+                print("Failed")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+            }
+        })
+    }
 }
