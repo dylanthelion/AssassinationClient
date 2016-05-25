@@ -27,6 +27,9 @@
 		745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */; };
 		745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F57CB1C43562D001B7CC9 /* StringExtensions.swift */; };
 		745F580A1C448A87001B7CC9 /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745F58091C448A87001B7CC9 /* EditUserViewController.swift */; };
+		74675E221CF14D19007CDC3C /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74675E211CF14D19007CDC3C /* GameDetailsViewController.swift */; };
+		74675E241CF14EB9007CDC3C /* TwoColumnTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74675E231CF14EB9007CDC3C /* TwoColumnTableViewCell.swift */; };
+		74675E271CF14F7E007CDC3C /* EdgeInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74675E261CF14F7E007CDC3C /* EdgeInsetLabel.swift */; };
 		74BC7F2D1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC7F2C1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift */; };
 		74BC7F2F1CEB5EB300B8BE1E /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC7F2E1CEB5EB300B8BE1E /* GameStore.swift */; };
 		74C077B91CDD19BB00C70B40 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C077B81CDD19BB00C70B40 /* UserStore.swift */; };
@@ -36,6 +39,7 @@
 		74C850A91CE58BEA009C9B65 /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850A81CE58BEA009C9B65 /* CreateGameViewController.swift */; };
 		74C850AB1CE58E94009C9B65 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850AA1CE58E94009C9B65 /* Game.swift */; };
 		74C850AD1CE5A10F009C9B65 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850AC1CE5A10F009C9B65 /* LocationManager.swift */; };
+		74C8A5F61CED4D8D00DBFFCF /* EditGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C8A5F51CED4D8D00DBFFCF /* EditGameViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +87,9 @@
 		745F57C61C434767001B7CC9 /* JSONObjectBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONObjectBuilder.swift; sourceTree = "<group>"; };
 		745F57CB1C43562D001B7CC9 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		745F58091C448A87001B7CC9 /* EditUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
+		74675E211CF14D19007CDC3C /* GameDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
+		74675E231CF14EB9007CDC3C /* TwoColumnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoColumnTableViewCell.swift; sourceTree = "<group>"; };
+		74675E261CF14F7E007CDC3C /* EdgeInsetLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsetLabel.swift; sourceTree = "<group>"; };
 		74BC7F2C1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RallyGameTableViewCell.swift; sourceTree = "<group>"; };
 		74BC7F2E1CEB5EB300B8BE1E /* GameStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		74C077B81CDD19BB00C70B40 /* UserStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
@@ -92,6 +99,7 @@
 		74C850A81CE58BEA009C9B65 /* CreateGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGameViewController.swift; sourceTree = "<group>"; };
 		74C850AA1CE58E94009C9B65 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		74C850AC1CE5A10F009C9B65 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		74C8A5F51CED4D8D00DBFFCF /* EditGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGameViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,9 +238,18 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		74675E251CF14F68007CDC3C /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				74675E261CF14F7E007CDC3C /* EdgeInsetLabel.swift */,
+			);
+			name = Labels;
+			sourceTree = "<group>";
+		};
 		74BC7F2A1CEB5AF100B8BE1E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				74675E251CF14F68007CDC3C /* Labels */,
 				74BC7F2B1CEB5AF800B8BE1E /* TableViewCells */,
 			);
 			name = Views;
@@ -242,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				74BC7F2C1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift */,
+				74675E231CF14EB9007CDC3C /* TwoColumnTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -281,6 +299,8 @@
 			children = (
 				74C850A61CE25396009C9B65 /* MainRallyViewController.swift */,
 				74C850A81CE58BEA009C9B65 /* CreateGameViewController.swift */,
+				74C8A5F51CED4D8D00DBFFCF /* EditGameViewController.swift */,
+				74675E211CF14D19007CDC3C /* GameDetailsViewController.swift */,
 			);
 			name = Rally;
 			sourceTree = "<group>";
@@ -429,16 +449,20 @@
 				745F580A1C448A87001B7CC9 /* EditUserViewController.swift in Sources */,
 				74C850A71CE25396009C9B65 /* MainRallyViewController.swift in Sources */,
 				74C850A91CE58BEA009C9B65 /* CreateGameViewController.swift in Sources */,
+				74675E221CF14D19007CDC3C /* GameDetailsViewController.swift in Sources */,
 				745F57AF1C3FFCCC001B7CC9 /* LoginViewController.swift in Sources */,
+				74C8A5F61CED4D8D00DBFFCF /* EditGameViewController.swift in Sources */,
 				74C850AD1CE5A10F009C9B65 /* LocationManager.swift in Sources */,
 				745F57741C3FF24B001B7CC9 /* AppDelegate.swift in Sources */,
 				745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */,
 				745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */,
 				745F57BB1C4068C0001B7CC9 /* DataStore.swift in Sources */,
+				74675E271CF14F7E007CDC3C /* EdgeInsetLabel.swift in Sources */,
 				74BC7F2F1CEB5EB300B8BE1E /* GameStore.swift in Sources */,
 				74BC7F2D1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift in Sources */,
 				745F57B41C40043D001B7CC9 /* LoginHelper.swift in Sources */,
 				74C850AB1CE58E94009C9B65 /* Game.swift in Sources */,
+				74675E241CF14EB9007CDC3C /* TwoColumnTableViewCell.swift in Sources */,
 				745F57BF1C4078E0001B7CC9 /* Constants.swift in Sources */,
 				745F57C51C434520001B7CC9 /* HTTPRequestFuncs.swift in Sources */,
 				74C077B91CDD19BB00C70B40 /* UserStore.swift in Sources */,

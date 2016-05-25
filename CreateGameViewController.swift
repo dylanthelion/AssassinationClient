@@ -196,6 +196,7 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         APIManager.CreateGame(game)
     }
     
+    
     func addMap() {
         let YCoord : CGFloat = self.view.frame.height / 3.0
         let height : CGFloat = YCoord * 2.0

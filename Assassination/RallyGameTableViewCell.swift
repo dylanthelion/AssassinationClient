@@ -27,7 +27,7 @@ class RallyGameTableViewCell: UITableViewCell {
     
     @IBAction func edit(sender: AnyObject) {
         if let _ = game {
-            delegate?.PresentEditGameView((game?.id!)!)
+            delegate?.PresentEditGameView(game!)
         }
     }
     
@@ -35,6 +35,6 @@ class RallyGameTableViewCell: UITableViewCell {
 }
 
 protocol RallyGameTableViewCellDelegate {
-    func PresentEditGameView(gameId : Int)
+    func PresentEditGameView(game : Game)
     func PresentMapForLocation(location : CLLocationCoordinate2D, description : String)
 }
