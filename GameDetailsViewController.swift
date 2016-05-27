@@ -13,6 +13,8 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     @IBOutlet weak var TableViewMain: UITableView!
     @IBOutlet weak var JoinButton: UIButton!
     @IBOutlet weak var DeleteButton: UIButton!
+    @IBOutlet weak var ErrorLabel: UILabel!
+    
     var dataStore : DataManager = DataManager.AppData
     var game : Game?
     
@@ -48,14 +50,33 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     }
     
     func ModelDidUpdate(message: String?) {
-        
+        if let _ = message {
+            let color : UIColor
+            if message! == "Success!" {
+                color = UIColor.greenColor()
+            } else {
+                color = UIColor.redColor()
+            }
+            self.updateInfoMessageLabel(message!, color: color)
+        }
     }
     
     @IBAction func JoinButtonPressed(sender: AnyObject) {
+        if !self.dataStore.userStore.isValidUser || self.game == nil {
+            return
+        }
         
+        APIManager.JoinGame(self.game!.id!)
     }
     
     @IBAction func DeleteButtonPressed(sender: AnyObject) {
+    }
+    
+    func updateInfoMessageLabel(message : String, color: UIColor) {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.ErrorLabel.text = message
+            self.ErrorLabel.textColor = color
+        })
     }
     
 }
