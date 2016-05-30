@@ -72,6 +72,15 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     @IBAction func DeleteButtonPressed(sender: AnyObject) {
     }
     
+    
+    @IBAction func LeaveButtonPressed(sender: AnyObject) {
+        if !self.dataStore.userStore.isValidUser || self.game == nil {
+            return
+        }
+        
+        APIManager.LeaveGame(self.game!.id!)
+    }
+    
     func updateInfoMessageLabel(message : String, color: UIColor) {
         dispatch_async(dispatch_get_main_queue(), {
             self.ErrorLabel.text = message

@@ -267,11 +267,33 @@ class APIManager {
             return
         }
         
-        let url = dataManager.JoinGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        //let url = dataManager.JoinGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let url = dataManager.JoinGameURL(4, password: "dylan1dylan1", gameId: gameId)
         let requestType = "PUT"
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
             print("Handling")
             if(parsedResponse[0] as NSString) == "Joined!" {
+                print("Success!")
+                DataManager.AppData.UserAPIActionSuccessful("Success!")
+            } else {
+                print("Failed")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+            }
+        })
+    }
+    
+    class func LeaveGame(gameId : Int) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        //let url = dataManager.LeaveGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let url = dataManager.LeaveGameURL(4, password: "dylan1dylan1", gameId: gameId)
+        let requestType = "DELETE"
+        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
+            print("Handling")
+            if(parsedResponse[0] as NSString) == "Removed!" {
                 print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Success!")
             } else {
