@@ -267,7 +267,8 @@ class APIManager {
             return
         }
         
-        let url = dataManager.JoinGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        //let url = dataManager.JoinGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let url = dataManager.JoinGameURL(4, password: "dylan1dylan1", gameId: gameId)
         let requestType = "PUT"
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
             print("Handling")
