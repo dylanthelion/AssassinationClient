@@ -304,6 +304,10 @@ class DataManager : UserStoreDelegate {
     func JoinGameURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
         return NSURL(string: String(format: "%@Rally/JoinGame?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
     }
+    
+    func LeaveGameURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
+        return NSURL(string: String(format: "%@Rally/LeaveGame?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
 }
 
 protocol DataStoreDelegate {
