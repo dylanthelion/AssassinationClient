@@ -176,6 +176,21 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     }
     
     @IBAction func DeleteButtonPressed(sender: AnyObject) {
+        if !self.dataStore.userStore.isValidUser || self.game == nil {
+            self.updateInfoMessageLabel("Account or game invalid", color: UIColor.redColor())
+            return
+        }
+        let alertVC = UIAlertController(title: "Delete Game", message: "Are you sure?", preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            print("Delete cancelled")
+        }
+        alertVC.addAction(cancelAction)
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            self.updateInfoMessageLabel("Deleting...", color: UIColor.orangeColor())
+            APIManager.DeleteGame(self.game!.id!)
+        }
+        alertVC.addAction(OKAction)
+        self.presentViewController(alertVC, animated: true, completion: nil)
     }
     
     
