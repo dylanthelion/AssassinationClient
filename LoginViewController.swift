@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import CoreLocation
 
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, DataStoreDelegate {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, DataStoreDelegate, CLLocationManagerDelegate {
     
     let facebookReadPermissions = ["public_profile", "email", "user_friends", "user_hometown"]
     let dataManager : DataManager = DataManager.AppData
+    var locationManager : LocationManager = LocationManager.sharedManager
 
     @IBOutlet weak var FBLoginButton: FBSDKLoginButton!
     @IBOutlet weak var FBLogoutButton: UIButton!
@@ -24,6 +26,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, DataStore
         
         FBLoginButton.delegate = self
         FBLoginButton.readPermissions = self.facebookReadPermissions
+        self.locationManager.startLocating(self)
         
         //checkLogin()
         

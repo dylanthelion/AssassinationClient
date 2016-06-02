@@ -94,6 +94,39 @@ class HTTPRequests {
         }
     }
     
+    func GetJSONArrayResponseWithArrayBody(url : NSURL?, requestType : String, requestBody : [AnyObject], completion : (parsedResponse : [String]) -> Void) {
+        print("URL: \(url)")
+        if let _ = url {
+            
+            let request = BuildURLRequestWithArrayBody(url, requestType: requestType, requestBody: requestBody)
+            print("URL: \(request?.URL!)")
+            print("TYPE: \(request?.HTTPMethod)")
+            print("Headers: \(request?.allHTTPHeaderFields!)")
+            let session = NSURLSession.sharedSession()
+            
+            let task = session.dataTaskWithRequest(request!, completionHandler: {data, response, error -> Void in
+                print("Response: \(response)")
+                guard data != nil else {
+                    print("no data found: \(error)")
+                    return
+                }
+                
+                if let _ = data {
+                    let checkData = self.JSONBuilder.JSONMessageStringToArray(data!)
+                    if let _ = checkData {
+                        print("Decoded data: \(checkData!)")
+                        completion(parsedResponse: checkData as! [String])
+                    } else {
+                        let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                        print("String data: \(jsonStr!)")
+                    }
+                }
+            })
+            
+            task.resume()
+        }
+    }
+    
     func GetJSONArrayOfObjectsResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?, completion : (parsedResponse : [AnyObject]) -> Void) {
         print("URL: \(url)")
         if let _ = url {
@@ -202,6 +235,25 @@ class HTTPRequests {
                 print("Failed to encode")
                 request.HTTPBody = nil
             }
+        }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        return request
+    }
+    
+    private func BuildURLRequestWithArrayBody(url : NSURL?, requestType : String, requestBody : [AnyObject]) -> NSMutableURLRequest? {
+        
+        let request : NSMutableURLRequest = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = requestType
+        
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(requestBody, options: [])
+                //print("Set body to \(requestBody!)")
+        } catch _ as NSError {
+            print("Failed to encode")
+            request.HTTPBody = nil
         }
         
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")

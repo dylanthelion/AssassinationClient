@@ -288,17 +288,10 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mkO-R9-arI">
-                                <rect key="frame" x="33" y="550" width="149" height="30"/>
+                                <rect key="frame" x="33" y="531" width="149" height="30"/>
                                 <state key="normal" title="Join"/>
                                 <connections>
                                     <action selector="JoinButtonPressed:" destination="l56-YW-2N0" eventType="touchUpInside" id="cWY-nV-AdQ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aVX-T9-pjg">
-                                <rect key="frame" x="471" y="550" width="109" height="30"/>
-                                <state key="normal" title="Delete"/>
-                                <connections>
-                                    <action selector="DeleteButtonPressed:" destination="l56-YW-2N0" eventType="touchUpInside" id="ijb-XS-fO5"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDR-V4-QQE">
@@ -312,6 +305,24 @@
                                 <state key="normal" title="Leave"/>
                                 <connections>
                                     <action selector="LeaveButtonPressed:" destination="l56-YW-2N0" eventType="touchUpInside" id="Fje-ba-ugZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s2E-wN-ZSN">
+                                <rect key="frame" x="33" y="567" width="149" height="30"/>
+                                <state key="normal" title="Setup"/>
+                                <connections>
+                                    <action selector="SetupButtonPressed:" destination="l56-YW-2N0" eventType="touchUpInside" id="NA4-DA-9at"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Src-Lc-QNt">
+                                <rect key="frame" x="471" y="567" width="109" height="30"/>
+                                <state key="normal" title="Play"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aVX-T9-pjg">
+                                <rect key="frame" x="471" y="531" width="109" height="30"/>
+                                <state key="normal" title="Delete"/>
+                                <connections>
+                                    <action selector="DeleteButtonPressed:" destination="l56-YW-2N0" eventType="touchUpInside" id="ijb-XS-fO5"/>
                                 </connections>
                             </button>
                         </subviews>

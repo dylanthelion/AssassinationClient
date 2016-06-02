@@ -42,7 +42,5 @@ class TwoColumnTableViewCell: UITableViewCell {
             })
         }
         
-        print("Frame: \(self.LabelRight?.frame)")
-        
     }
 }
