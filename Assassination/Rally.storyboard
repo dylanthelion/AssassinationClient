@@ -280,10 +280,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="LabelLeft" destination="Wi6-AN-xm8" id="dNW-Qs-Lep"/>
-                                            <outlet property="LabelRight" destination="IeP-hC-Qaf" id="kaF-p5-mqr"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

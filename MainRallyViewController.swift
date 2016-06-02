@@ -49,7 +49,6 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
         cell.LocationDescriptionLabel.text = game.description!
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd hh:mm"
-        print("Start time : \(game.startTime)")
         cell.StartTimeLabel.text = dateFormatter.stringFromDate(game.startTime!)
         switch game.gameType!.rawValue {
         case 0:
