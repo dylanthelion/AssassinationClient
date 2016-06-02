@@ -191,16 +191,34 @@ class APIManager {
                     gameToLoad.numberOfPlayers = parsedGame["NumberOfPlayers"]! as? Int
                     gameToLoad.radiusInMeters = parsedGame["RadiusInMeters"]! as? Int
                     let dateFormatter = NSDateFormatter()
-                    print("Unparsed start time: \(parsedGame["StartTime"]! as! String)")
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
                     gameToLoad.startTime = dateFormatter.dateFromString(parsedGame["StartTime"]! as! String)
-                    print("Loaded start time: \(gameToLoad.startTime)")
                     dataManager.gameStore.addGameToRally(gameToLoad)
                     dataManager.UserAPIActionSuccessful("Success!")
                 }
             } else {
                 dataManager.UserAPIActionFailed("Failed to load games from server")
                 print("Failed")
+            }
+        })
+    }
+    
+    class func DeleteGame(gameId : Int) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.DeleteGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let requestType = "DELETE"
+        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
+            print("Handling")
+            if(parsedResponse[0] as NSString) == "Deleted!" {
+                print("Success!")
+                DataManager.AppData.UserAPIActionSuccessful("Success!")
+            } else {
+                print("Failed")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
     }
@@ -241,23 +259,48 @@ class APIManager {
         })
     }
     
-    class func DeleteGame(gameId : Int) {
+    class func GetGame(gameId : Int) {
         let dataManager = DataManager.AppData
         if !dataManager.userStore.isValidUser {
             return
         }
         
-        let url = dataManager.DeleteGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
-        let requestType = "DELETE"
-        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
+        let url = dataManager.GetGameURL(gameId)
+        let requestType = "GET"
+        HTTPRequests.RequestManager.GetJSONResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : Dictionary<String, AnyObject>) -> Void in
             print("Handling")
-            if(parsedResponse[0] as NSString) == "Deleted!" {
-                print("Success!")
-                DataManager.AppData.UserAPIActionSuccessful("Success!")
+            if let _ = parsedResponse["Moderator"] {
+                print("Success")
+                let currentGame = Game()
+                currentGame.description = (parsedResponse["Location"]! as! String)
+                let checkGameType : String = parsedResponse["Game Type"]! as! String
+                switch checkGameType {
+                case "IndividualTargets" :
+                    currentGame.gameType = GameType.IndividualTargets
+                case "FreeForAll" :
+                    currentGame.gameType = GameType.FreeForAll
+                case "Team" :
+                    currentGame.gameType = GameType.Team
+                default :
+                    print("Failed to parse game type: \(checkGameType)")
+                }
+                currentGame.id = gameId
+                currentGame.joinedPlayers = (parsedResponse["Players"] as! [String])
+                currentGame.locationCoordinate = [Double(parsedResponse["Latitude"] as! String)!, Double(parsedResponse["Longitude"] as! String)!]
+                currentGame.moderator = (parsedResponse["Moderator"] as! String)
+                currentGame.numberOfPlayers = Int(parsedResponse["Needed"] as! String)
+                //let date =  parsedResponse["StartTime"] as! String
+                //Date returned from server is currently in short form: hh:mm. Use date passed from Rally
+                currentGame.startTime = NSDate()
+                DataManager.AppData.gameStore.currentGame = currentGame
+                DataManager.AppData.UserAPIActionSuccessful("Game info")
             } else {
                 print("Failed")
-                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+                DataManager.AppData.UserAPIActionFailed("Unknown error")
             }
+            }, errorHandler: {(parsedResponse : [String]) -> Void in
+                print("Error")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
         })
     }
     

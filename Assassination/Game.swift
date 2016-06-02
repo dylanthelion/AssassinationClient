@@ -20,6 +20,8 @@ class Game {
     var isActiveGame : Bool?
     var gameLength : Int?
     var gameType : GameType?
+    var moderator : String?
+    var joinedPlayers : [String]?
     
     init() {
         id = 0

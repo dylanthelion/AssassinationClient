@@ -13,6 +13,7 @@ private let GameManager = GameStore()
 class GameStore {
     
     var games : [Game]?
+    var currentGame : Game?
     
     class var AppGameStore: GameStore {
         return GameManager
@@ -38,5 +39,9 @@ class GameStore {
             return (true, games!)
         }
         return (false, nil)
+    }
+    
+    func getCurrentGame() -> Game? {
+        return currentGame
     }
 }

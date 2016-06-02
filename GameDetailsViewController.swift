@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
 
 class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableViewDelegate, UITableViewDataSource {
     
@@ -14,12 +16,16 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     @IBOutlet weak var JoinButton: UIButton!
     @IBOutlet weak var DeleteButton: UIButton!
     @IBOutlet weak var ErrorLabel: UILabel!
+    var mapViewDoneButton : UIBarButtonItem?
     
     var dataStore : DataManager = DataManager.AppData
     var game : Game?
+    var mapView : MKMapView?
     
     override func viewDidLoad() {
-        
+        if let _ = self.game {
+            APIManager.GetGame(self.game!.id!)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -33,32 +39,132 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        
+        if self.dataStore.gameStore.currentGame == nil {
+            return 0
+        }
+        
+        if section == 0 {
+            return 6
+        } else {
+            return self.dataStore.gameStore.currentGame!.joinedPlayers!.count
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        if self.dataStore.gameStore.currentGame == nil {
+            return 0
+        }
+        return 2
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if section == 1 {
+            if self.dataStore.gameStore.currentGame == nil {
+                return "Players:"
+            } else {
+                return "Players: \(self.dataStore.gameStore.currentGame!.joinedPlayers!.count)"
+            }
+        } else {
+            return nil
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("", forIndexPath: indexPath) as! TwoColumnTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("TwoColumnTableViewCell", forIndexPath: indexPath) as! TwoColumnTableViewCell
+        if let _ = self.dataStore.gameStore.currentGame {
+            switch indexPath.section {
+            case 0:
+                switch  indexPath.row {
+                case 0:
+                    cell.addLabels("Moderator:", textRight: self.dataStore.gameStore.currentGame!.moderator!)
+                case 1:
+                    cell.addLabels("Location:", textRight: self.dataStore.gameStore.currentGame!.description!)
+                case 2:
+                    cell.addLabels("Show Map", textRight: "")
+                case 3:
+                    cell.addLabels("Game Type:", textRight: "Individual Targets")
+                case 4:
+                    if let _ = self.game {
+                        self.dataStore.gameStore.currentGame?.startTime = self.game?.startTime!
+                    }
+                    let dateFormatter  = NSDateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                    cell.addLabels("Start Time:", textRight: dateFormatter.stringFromDate(self.dataStore.gameStore.currentGame!.startTime!))
+                case 5:
+                    cell.addLabels("Number of Players:", textRight: String(self.dataStore.gameStore.currentGame!.numberOfPlayers!))
+                default:
+                    print("Something went wrong")
+                }
+            default:
+                cell.addLabels(dataStore.gameStore.currentGame!.joinedPlayers![indexPath.row], textRight: "")
+            }
+        } else {
+            print("Game is nil")
+        }
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        print("Did select: \(indexPath.section) \(indexPath.row)")
+        if indexPath.section != 0 && indexPath.row != 2 {
+            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        } else {
+            if let _ = self.dataStore.gameStore.currentGame {
+                self.addMap()
+            }
+        }
     }
     
     func ModelDidUpdate(message: String?) {
         if let _ = message {
-            let color : UIColor
-            if message! == "Success!" {
-                color = UIColor.greenColor()
+            if(message! == "Game info") {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.TableViewMain.reloadData()
+                    self.TableViewMain.reloadRowsAtIndexPaths(self.TableViewMain.indexPathsForVisibleRows!, withRowAnimation: .None)
+                })
             } else {
-                color = UIColor.redColor()
+                let color : UIColor
+                if message! == "Success!" {
+                    color = UIColor.greenColor()
+                } else {
+                    color = UIColor.redColor()
+                }
+                self.updateInfoMessageLabel(message!, color: color)
             }
-            self.updateInfoMessageLabel(message!, color: color)
         }
+    }
+    
+    func addMap() {
+        let YCoord : CGFloat = 40.0
+        let height : CGFloat = self.view.frame.height - YCoord
+        self.mapView = MKMapView(frame: CGRectMake(0,YCoord,self.view.frame.width,height))
+        let span = MKCoordinateSpanMake(0.5, 0.5)
+        let myLocation = self.dataStore.gameStore.currentGame!.locationCoordinate!
+        let myCoords = CLLocationCoordinate2DMake(myLocation[0], myLocation[1])
+        let region = MKCoordinateRegionMake(myCoords, span)
+        
+        self.mapView!.setRegion(region, animated: true)
+        self.mapView!.setUserTrackingMode(MKUserTrackingMode.FollowWithHeading, animated: true)
+        let placemark = MKPointAnnotation()
+        placemark.coordinate = myCoords
+        placemark.title = self.dataStore.gameStore.currentGame!.description!
+        self.mapView?.addAnnotation(placemark)
+        self.view.addSubview(self.mapView!)
+        addMapViewDoneButton()
+    }
+    
+    func addMapViewDoneButton() {
+        self.mapViewDoneButton = UIBarButtonItem(title: "DONE", style: .Plain, target: self, action: #selector(CreateGameViewController.dismissMapView))
+        self.navigationItem.rightBarButtonItem = self.mapViewDoneButton!
+    }
+    
+    func dismissMapView() {
+        self.mapView?.removeFromSuperview()
+        self.mapView = nil
+        self.navigationItem.rightBarButtonItem = nil
+        self.mapViewDoneButton = nil
     }
     
     @IBAction func JoinButtonPressed(sender: AnyObject) {
