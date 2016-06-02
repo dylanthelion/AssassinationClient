@@ -345,4 +345,26 @@ class APIManager {
             }
         })
     }
+    
+    class func SetupGame(gameId : Int) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.SetupGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let requestType = "POST"
+        let body = []
+        // Team game not set up yet
+        HTTPRequests.RequestManager.GetJSONArrayResponseWithArrayBody(url, requestType: requestType, requestBody: body as [AnyObject], completion: {(parsedResponse : [String]) -> Void in
+            print("Handling")
+            if(parsedResponse[0] as NSString) == "Targets set up! Get going!" {
+                print("Success!")
+                DataManager.AppData.UserAPIActionSuccessful("Targets set up! Get going!")
+            } else {
+                print("Failed")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+            }
+        })
+    }
 }

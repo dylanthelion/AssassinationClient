@@ -312,6 +312,10 @@ class DataManager : UserStoreDelegate {
     func GetGameURL(gameId : Int) -> NSURL? {
         return NSURL(string: String(format: "%@Game/GetGame?gameID=%@", Constants.API_URL, String(gameId)).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
     }
+    
+    func SetupGameURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
+        return NSURL(string: String(format: "%@SetupGame/SetupGame?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
 }
 
 protocol DataStoreDelegate {

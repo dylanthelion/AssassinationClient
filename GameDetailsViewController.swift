@@ -124,6 +124,9 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
                     self.TableViewMain.reloadData()
                     self.TableViewMain.reloadRowsAtIndexPaths(self.TableViewMain.indexPathsForVisibleRows!, withRowAnimation: .None)
                 })
+            } else if message! == "Targets set up! Get going!" {
+                // Game local setup?
+                self.updateInfoMessageLabel(message!, color: UIColor.greenColor())
             } else {
                 let color : UIColor
                 if message! == "Success!" {
@@ -201,6 +204,15 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
         
         APIManager.LeaveGame(self.game!.id!)
     }
+    
+    @IBAction func SetupButtonPressed(sender: AnyObject) {
+        if !self.dataStore.userStore.isValidUser || self.game == nil {
+            return
+        }
+        self.updateInfoMessageLabel("Setting up...", color: UIColor.orangeColor())
+        APIManager.SetupGame(self.game!.id!)
+    }
+    
     
     func updateInfoMessageLabel(message : String, color: UIColor) {
         dispatch_async(dispatch_get_main_queue(), {
