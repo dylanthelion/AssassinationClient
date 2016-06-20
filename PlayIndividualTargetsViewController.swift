@@ -20,6 +20,7 @@ UITextFieldDelegate {
     var targetLastLocation : CLLocationCoordinate2D?
     var targetName : String?
     var isGettingPlayers = false
+    var targetPin : MKPlacemark?
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var txtFieldMessage: UITextField!
     @IBOutlet weak var btnKill: UIButton!
@@ -57,6 +58,9 @@ UITextFieldDelegate {
             if checkLat != 0.0 && checkLong != 0.0 {
                 self.targetLastLocation = CLLocationCoordinate2DMake(checkLat, checkLong)
                 self.targetName = splitMessage![1]
+                if let _ = self.mapView {
+                    self.updateTargetLocation()
+                }
             }
         } else {
             self.updateInfoPlayersLabel(message!, color: UIColor.blackColor())
@@ -185,5 +189,16 @@ UITextFieldDelegate {
         }
         self.isGettingPlayers = true
         APIManager.GetPlayers(self.gameId!)
+    }
+    
+    func updateTargetLocation() {
+        if let _ = self.targetPin {
+            self.mapView.removeAnnotation(self.targetPin!)
+            self.targetPin = MKPlacemark(coordinate: self.targetLastLocation!, addressDictionary: nil)
+            self.mapView.addAnnotation(self.targetPin!)
+        } else {
+            self.targetPin = MKPlacemark(coordinate: self.targetLastLocation!, addressDictionary: nil)
+            self.mapView.addAnnotation(self.targetPin!)
+        }
     }
 }
