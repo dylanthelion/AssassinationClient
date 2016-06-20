@@ -40,6 +40,10 @@
 		74C850AB1CE58E94009C9B65 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850AA1CE58E94009C9B65 /* Game.swift */; };
 		74C850AD1CE5A10F009C9B65 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C850AC1CE5A10F009C9B65 /* LocationManager.swift */; };
 		74C8A5F61CED4D8D00DBFFCF /* EditGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C8A5F51CED4D8D00DBFFCF /* EditGameViewController.swift */; };
+		74D962001D00D7B5005F5723 /* PlayGameStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74D961FF1D00D7B5005F5723 /* PlayGameStoryboard.storyboard */; };
+		74D962031D00D801005F5723 /* PlayIndividualTargetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D962021D00D801005F5723 /* PlayIndividualTargetsViewController.swift */; };
+		74D9624E1D00FC77005F5723 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D9624D1D00FC77005F5723 /* SSLSecurity.swift */; };
+		74D962501D00FC97005F5723 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D9624F1D00FC97005F5723 /* WebSocket.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +104,10 @@
 		74C850AA1CE58E94009C9B65 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		74C850AC1CE5A10F009C9B65 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		74C8A5F51CED4D8D00DBFFCF /* EditGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGameViewController.swift; sourceTree = "<group>"; };
+		74D961FF1D00D7B5005F5723 /* PlayGameStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PlayGameStoryboard.storyboard; sourceTree = "<group>"; };
+		74D962021D00D801005F5723 /* PlayIndividualTargetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayIndividualTargetsViewController.swift; sourceTree = "<group>"; };
+		74D9624D1D00FC77005F5723 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSLSecurity.swift; sourceTree = "<group>"; };
+		74D9624F1D00FC97005F5723 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +141,7 @@
 		745F57671C3FF24B001B7CC9 = {
 			isa = PBXGroup;
 			children = (
+				74D9624C1D00FC58005F5723 /* Starscream_Copy */,
 				745F57A11C3FF491001B7CC9 /* Frameworks */,
 				745F57721C3FF24B001B7CC9 /* Assassination */,
 				745F57871C3FF24B001B7CC9 /* AssassinationTests */,
@@ -199,6 +208,7 @@
 		745F57AD1C3FFC6D001B7CC9 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				74D962011D00D7E9005F5723 /* Play */,
 				74C850A51CE25381009C9B65 /* Rally */,
 				74C850A41CE25371009C9B65 /* Account */,
 			);
@@ -279,6 +289,7 @@
 				745F577C1C3FF24B001B7CC9 /* LaunchScreen.storyboard */,
 				745F57771C3FF24B001B7CC9 /* Main.storyboard */,
 				74C850A21CE25336009C9B65 /* Rally.storyboard */,
+				74D961FF1D00D7B5005F5723 /* PlayGameStoryboard.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -303,6 +314,23 @@
 				74675E211CF14D19007CDC3C /* GameDetailsViewController.swift */,
 			);
 			name = Rally;
+			sourceTree = "<group>";
+		};
+		74D962011D00D7E9005F5723 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				74D962021D00D801005F5723 /* PlayIndividualTargetsViewController.swift */,
+			);
+			name = Play;
+			sourceTree = "<group>";
+		};
+		74D9624C1D00FC58005F5723 /* Starscream_Copy */ = {
+			isa = PBXGroup;
+			children = (
+				74D9624D1D00FC77005F5723 /* SSLSecurity.swift */,
+				74D9624F1D00FC97005F5723 /* WebSocket.swift */,
+			);
+			name = Starscream_Copy;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -417,6 +445,7 @@
 				745F577E1C3FF24B001B7CC9 /* LaunchScreen.storyboard in Resources */,
 				745F577B1C3FF24B001B7CC9 /* Assets.xcassets in Resources */,
 				745F57791C3FF24B001B7CC9 /* Main.storyboard in Resources */,
+				74D962001D00D7B5005F5723 /* PlayGameStoryboard.storyboard in Resources */,
 				74C850A31CE25336009C9B65 /* Rally.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,6 +472,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74C850A01CE12FD7009C9B65 /* RecoverUserViewController.swift in Sources */,
+				74D962031D00D801005F5723 /* PlayIndividualTargetsViewController.swift in Sources */,
 				745F57C31C43443D001B7CC9 /* APIManager.swift in Sources */,
 				745F57B71C4007E8001B7CC9 /* User.swift in Sources */,
 				745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */,
@@ -451,11 +481,13 @@
 				74C850A91CE58BEA009C9B65 /* CreateGameViewController.swift in Sources */,
 				74675E221CF14D19007CDC3C /* GameDetailsViewController.swift in Sources */,
 				745F57AF1C3FFCCC001B7CC9 /* LoginViewController.swift in Sources */,
+				74D9624E1D00FC77005F5723 /* SSLSecurity.swift in Sources */,
 				74C8A5F61CED4D8D00DBFFCF /* EditGameViewController.swift in Sources */,
 				74C850AD1CE5A10F009C9B65 /* LocationManager.swift in Sources */,
 				745F57741C3FF24B001B7CC9 /* AppDelegate.swift in Sources */,
 				745F57C11C408FDF001B7CC9 /* CreateUserViewController.swift in Sources */,
 				745F57CC1C43562D001B7CC9 /* StringExtensions.swift in Sources */,
+				74D962501D00FC97005F5723 /* WebSocket.swift in Sources */,
 				745F57BB1C4068C0001B7CC9 /* DataStore.swift in Sources */,
 				74675E271CF14F7E007CDC3C /* EdgeInsetLabel.swift in Sources */,
 				74BC7F2F1CEB5EB300B8BE1E /* GameStore.swift in Sources */,
@@ -617,6 +649,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = Header.h;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "\"$(SRCROOT)/../../../../Downloads/Starscream-master/Starscream.xcodeproj\"/**";
 			};
 			name = Debug;
 		};
