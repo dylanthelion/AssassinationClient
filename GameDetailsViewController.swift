@@ -103,17 +103,25 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
         } else {
             print("Game is nil")
         }
+        let xCoord : CGFloat = 0.0
+        let yCoord : CGFloat = 0.0
+        let width : CGFloat = cell.frame.width / 2.0
+        let height : CGFloat = cell.frame.height
+        cell.LabelLeft?.frame = CGRectMake(xCoord, yCoord, width, height)
+        cell.LabelRight?.frame = CGRectMake(width, yCoord, width, height)
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("Did select: \(indexPath.section) \(indexPath.row)")
-        if indexPath.section != 0 && indexPath.row != 2 {
-            tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        } else {
+        if (indexPath.section == 0 && indexPath.row == 2) {
+            print("Section : \(indexPath.section) Row: \(indexPath.row)")
             if let _ = self.dataStore.gameStore.currentGame {
                 self.addMap()
             }
+        } else {
+            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+            print("Didn't")
         }
     }
     
