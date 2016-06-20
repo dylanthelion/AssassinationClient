@@ -59,7 +59,7 @@ UITextFieldDelegate {
                 self.targetName = splitMessage![1]
             }
         } else {
-            self.updateInfoMessageLabel(message!, color: UIColor.blackColor())
+            self.updateInfoPlayersLabel(message!, color: UIColor.blackColor())
         }
     }
     
@@ -89,11 +89,11 @@ UITextFieldDelegate {
     
     func websocketDidReceiveMessage(socket: WebSocket, text: String) {
         print("got some text: \(text)")
-        let check = text.rangeOfString(":")
+        let check = text.rangeOfString("Target")
         if check != nil {
-            self.updateInfoMessageLabel(text, color: UIColor.blackColor())
-        } else {
             self.updateInfoPlayersLabel(text, color: UIColor.blackColor())
+        } else {
+            self.updateInfoMessageLabel(text, color: UIColor.blackColor())
         }
         
         if let _ = self.locationManager.location {
