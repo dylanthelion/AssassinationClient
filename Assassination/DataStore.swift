@@ -287,6 +287,7 @@ class DataManager : UserStoreDelegate {
     
     func CreateGameURL(playerId : Int, password : String) -> NSURL? {
         return NSURL(string: String(format: "%@Game/CreateGame?playerID=%@&password=%@", Constants.API_URL, String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+        
     }
     
     var GetAllGamesURL : NSURL? {
@@ -315,6 +316,22 @@ class DataManager : UserStoreDelegate {
     
     func SetupGameURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
         return NSURL(string: String(format: "%@SetupGame/SetupGame?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+    
+    func JoinIndividualTargetsGameURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
+        return NSURL(string: String(format: "%@JoinIndividualTargetsGame/JoinGame?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+    
+    func UpdateLocationURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
+        return NSURL(string: String(format: "%@Play/UpdateLocation?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+    
+    func KillPlayerURL(playerId : Int, password: String, gameId : Int, TargetName : String) -> NSURL? {
+        return NSURL(string: String(format: "%@Play/KillPlayer?gameID=%@&playerID=%@&password=%@&targetName=%@", Constants.API_URL, String(gameId), String(playerId), password, TargetName).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
+    }
+    
+    func GetPlayersURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
+        return NSURL(string: String(format: "%@Play/GetLiveCharacters?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
     }
 }
 

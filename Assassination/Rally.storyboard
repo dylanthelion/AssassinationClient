@@ -317,6 +317,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Src-Lc-QNt">
                                 <rect key="frame" x="471" y="567" width="109" height="30"/>
                                 <state key="normal" title="Play"/>
+                                <connections>
+                                    <segue destination="4oS-6L-5I6" kind="show" identifier="PlaySegue" id="n6f-di-9h2"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aVX-T9-pjg">
                                 <rect key="frame" x="471" y="531" width="109" height="30"/>
@@ -338,6 +341,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q4Z-bg-y99" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="343" y="1669"/>
+        </scene>
+        <!--PlayGameStoryboard-->
+        <scene sceneID="cZN-Rz-7gT">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PlayGameStoryboard" id="4oS-6L-5I6" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NaH-EA-s5Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="501.5" y="2209"/>
         </scene>
         <!--Edit Game View Controller-->
         <scene sceneID="Tw9-w6-fKZ">

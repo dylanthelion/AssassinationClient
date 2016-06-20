@@ -367,4 +367,106 @@ class APIManager {
             }
         })
     }
+    
+    class func UpdateLocation(gameId : Int, newLocation : CLLocationCoordinate2D) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.UpdateLocationURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let requestType = "POST"
+        var body = Dictionary<String, AnyObject>()
+        body["Latitude"] = newLocation.latitude
+        body["Longitude"] = newLocation.longitude
+        body["Altitude"] = 0.0
+        // Team game not set up yet
+        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: body, completion: {(parsedResponse : [String]) -> Void in
+            //print("Handling")
+            if(parsedResponse[0] as NSString) == "Updated!" {
+                //print("Success!")
+            } else {
+                //print("Failed")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+            }
+        })
+    }
+    
+    class func KillIndividualTargets(gameId : Int, newLocation : CLLocationCoordinate2D, target : String) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.KillPlayerURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId, TargetName: target)
+        let requestType = "DELETE"
+        var body = Dictionary<String, AnyObject>()
+        body["Latitude"] = newLocation.latitude
+        body["Longitude"] = newLocation.longitude
+        body["Altitude"] = 0.0
+        // Team game not set up yet
+        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: body, completion: {(parsedResponse : [String]) -> Void in
+            print("Handling")
+            if(parsedResponse[0] as NSString) == "Kill!" {
+                print("Success!")
+                DataManager.AppData.UserAPIActionSuccessful("Successful kill!")
+            } else {
+                print("Failed")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+            }
+        })
+    }
+    
+    class func JoinIndividualTargetsGameGetError(gameId : Int, location : CLLocationCoordinate2D) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.JoinIndividualTargetsGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let requestType = "GET"
+        var body = Dictionary<String, AnyObject>()
+        body["Latitude"] = location.latitude
+        body["Longitude"] = location.longitude
+        body["Altitude"] = 0.0
+        // Team game not set up yet
+        HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: body, completion: {(parsedResponse : [String]) -> Void in
+            
+            DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+        })
+    }
+    
+    class func GetPlayers(gameId : Int) {
+        let dataManager = DataManager.AppData
+        if !dataManager.userStore.isValidUser {
+            return
+        }
+        
+        let url = dataManager.GetPlayersURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
+        let requestType = "GET"
+        
+        HTTPRequests.RequestManager.GetJSONResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : Dictionary<String, AnyObject>) -> Void in
+            print("Handling")
+            if let _ = parsedResponse["Targets"] {
+                print("Success")
+                let targets = parsedResponse["Targets"] as! [String]
+                let players = parsedResponse["NonTargets"] as! [String]
+                var message = "Targets-"
+                for target in targets {
+                    message += " \(target),"
+                }
+                message += " Others-"
+                for player in players {
+                    message += " \(player),"
+                }
+                    DataManager.AppData.UserAPIActionSuccessful(message)
+            } else {
+                print("Failed")
+                DataManager.AppData.UserAPIActionFailed("Unknown error")
+            }
+            }, errorHandler: {(parsedResponse : [String]) -> Void in
+                print("Error")
+                DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
+        })
+    }
 }

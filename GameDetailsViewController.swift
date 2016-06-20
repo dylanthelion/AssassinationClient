@@ -87,11 +87,11 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
                     cell.addLabels("Game Type:", textRight: "Individual Targets")
                 case 4:
                     if let _ = self.game {
-                        self.dataStore.gameStore.currentGame?.startTime = self.game?.startTime!
+                        //self.dataStore.gameStore.currentGame?.startTime = self.game?.startTime!
                     }
                     let dateFormatter  = NSDateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                    cell.addLabels("Start Time:", textRight: dateFormatter.stringFromDate(self.dataStore.gameStore.currentGame!.startTime!))
+                    //cell.addLabels("Start Time:", textRight: dateFormatter.stringFromDate(self.dataStore.gameStore.currentGame!.startTime!))
                 case 5:
                     cell.addLabels("Number of Players:", textRight: String(self.dataStore.gameStore.currentGame!.numberOfPlayers!))
                 default:
@@ -219,6 +219,14 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
             self.ErrorLabel.text = message
             self.ErrorLabel.textColor = color
         })
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier! == "PlaySegue" {
+            if let check = segue.destinationViewController as? PlayIndividualTargetsViewController {
+                check.gameId = self.game!.id!
+            }
+        }
     }
     
 }
