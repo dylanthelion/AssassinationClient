@@ -333,6 +333,11 @@ class DataManager : UserStoreDelegate {
     func GetPlayersURL(playerId : Int, password: String, gameId : Int) -> NSURL? {
         return NSURL(string: String(format: "%@Play/GetLiveCharacters?gameID=%@&playerID=%@&password=%@", Constants.API_URL, String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!)
     }
+    
+    func JoinIndividualTargetsGame(playerId : Int, password: String, gameId : Int) -> NSURL? {
+        let IndividualTargetsPath = String(format: "JoinIndividualTargetsGame/JoinGame?gameID=%@&playerID=%@&password=%@", String(gameId), String(playerId), password).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!
+        return NSURL(string: String(format: "ws://assassinationgame.azurewebsites.net/api/%@", IndividualTargetsPath))!
+    }
 }
 
 protocol DataStoreDelegate {

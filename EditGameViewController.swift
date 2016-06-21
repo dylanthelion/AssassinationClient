@@ -108,7 +108,6 @@ class EditGameViewController: CreateGameViewController {
         }
         alertVC.addAction(cancelAction)
         let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            print("setup delete")
             self.updateInfoMessageLabel("Deleting...", color: UIColor.orangeColor())
             APIManager.DeleteGame(self.game!.id!)
         }
@@ -167,7 +166,6 @@ class EditGameViewController: CreateGameViewController {
     }
     
     override func disableTextFieldsForCustomInputView(enabledViewTag : Int) {
-        print("Tag to disable: \(enabledViewTag)")
         self.EditAddressTextField.userInteractionEnabled = false
         self.EditDescriptionTextField.userInteractionEnabled = false
         self.EditRadiusInMetersTextField.userInteractionEnabled = false
@@ -303,7 +301,6 @@ class EditGameViewController: CreateGameViewController {
     }
     
     override func updateInfoMessageLabel(message : String, color: UIColor) {
-        print("View updated!")
         dispatch_async(dispatch_get_main_queue(), {
             self.EditErrorLabel.text = message
             self.EditErrorLabel.textColor = color

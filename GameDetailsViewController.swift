@@ -113,15 +113,12 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("Did select: \(indexPath.section) \(indexPath.row)")
         if (indexPath.section == 0 && indexPath.row == 2) {
-            print("Section : \(indexPath.section) Row: \(indexPath.row)")
             if let _ = self.dataStore.gameStore.currentGame {
                 self.addMap()
             }
         } else {
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
-            print("Didn't")
         }
     }
     

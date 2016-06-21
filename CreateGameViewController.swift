@@ -343,7 +343,6 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     }
     
     func disableTextFieldsForCustomInputView(enabledViewTag : Int) {
-        print("Tag to disable: \(enabledViewTag)")
         self.AddressTextField.userInteractionEnabled = false
         self.LocationDescriptionTextField.userInteractionEnabled = false
         self.RadiusTextField.userInteractionEnabled = false

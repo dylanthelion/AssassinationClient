@@ -69,10 +69,8 @@ UITextFieldDelegate {
     
     func connectToGame() {
         if self.gameId != nil && self.dataStore.userStore.isValidUser {
-            let IndividualTargetsPath = String(format: "JoinIndividualTargetsGame/JoinGame?gameID=%@&playerID=%@&password=%@", String(self.gameId!), String(self.dataStore.userStore.user!.ID!), self.dataStore.userStore.user!.Password!).stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!
-            let url = NSURL(string: String(format: "ws://assassinationgame.azurewebsites.net/api/%@", IndividualTargetsPath))!
-            print("URL: \(url.path!)")
-            self.socket = WebSocket(url: url)
+            let url = self.dataStore.JoinIndividualTargetsGameURL(self.dataStore.userStore.user!.ID!, password: self.dataStore.userStore.user!.Password!, gameId: self.gameId!)
+            self.socket = WebSocket(url: url!)
             socket.delegate = self
             self.socket!.connect()
         }
@@ -92,7 +90,6 @@ UITextFieldDelegate {
     }
     
     func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        print("got some text: \(text)")
         let check = text.rangeOfString("Target")
         if check != nil {
             self.updateInfoPlayersLabel(text, color: UIColor.blackColor())
@@ -130,7 +127,6 @@ UITextFieldDelegate {
         if let _ = self.locationManager.location {
             let coords = self.locationManager.location!.coordinate
             let span = MKCoordinateSpanMake(0.5, 0.5)
-            //self.mapView.setCenterCoordinate(coords, animated: true)
             let region = MKCoordinateRegionMake(coords, span)
             self.mapView.setRegion(region, animated: true)
             self.mapView.setUserTrackingMode(MKUserTrackingMode.Follow, animated: true)
@@ -140,15 +136,8 @@ UITextFieldDelegate {
     
     @IBAction func sendMessage(sender: AnyObject) {
         if let _ = self.socket, _ = self.txtFieldMessage.text, _ = self.gameId {
-            print("send message")
             let message = "\(String(self.gameId!)),\(self.dataStore.userStore.user!.Name!): \(self.txtFieldMessage.text!))"
-            print("Message to send: \(message)")
             self.socket!.writeString(message)
-            if let _ = self.socket!.delegate {
-                print("Delegate is fine")
-            } else {
-                print("Delegate is null")
-            }
         }
     }
     
@@ -175,7 +164,6 @@ UITextFieldDelegate {
     
     func checkIfWithinKillDistance(location : CLLocationCoordinate2D) -> Bool {
         let distance : Double = sqrt(pow(Double(location.latitude - self.targetLastLocation!.latitude) * 111131.745, 2) + pow(Double(location.longitude - self.targetLastLocation!.longitude) * 78846.805720, 2));
-        print("Distance to target: \(distance)")
         if distance <= 11.0 {
             return true
         } else {
