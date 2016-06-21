@@ -46,12 +46,9 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
         let cell = tableView.dequeueReusableCellWithIdentifier("RallyGameTableViewCell", forIndexPath: indexPath) as! RallyGameTableViewCell
         let game = allGames![indexPath.row]
         cell.game = game
-        print("Game: \(game)")
-        //print("Time: \(game.startTime!)")
         cell.LocationDescriptionLabel.text = game.description!
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd hh:mm"
-        //cell.StartTimeLabel.text = dateFormatter.stringFromDate(game.startTime!)
         switch game.gameType!.rawValue {
         case 0:
             cell.GameTypeLabel.text = "Default"
@@ -80,7 +77,6 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
     }
     
     func ModelDidUpdate(message: String?) {
-        print("Message: \(message)")
         allGames = dataStore.gameStore.games
         dispatch_async(dispatch_get_main_queue(), {
             self.AllGamesTableView.reloadData()
