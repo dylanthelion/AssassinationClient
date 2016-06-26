@@ -42,6 +42,7 @@ UITextFieldDelegate {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dataStore.delegate = nil
+        self.locationManager.delegate = nil
         self.socket?.disconnect()
         self.socket?.delegate = nil
     }
@@ -116,8 +117,10 @@ UITextFieldDelegate {
             if let _ = self.targetLastLocation {
                 if self.checkIfWithinKillDistance(newLocation.coordinate) {
                     self.btnKill.enabled = true
+                    self.btnKill.titleLabel!.text = "Kill!"
                 } else {
                     self.btnKill.enabled = false
+                    self.btnKill.titleLabel!.text = ""
                 }
             }
         }
