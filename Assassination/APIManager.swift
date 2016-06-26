@@ -30,15 +30,12 @@ class APIManager {
         requestBody["ID"] = 0
         
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: requestBody, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(((parsedResponse[0] as NSString).substringToIndex(2) as String) == "ID") {
-                print("Success")
                 if let id = parsedResponse[0].getNumericPostscript() {
                     DataManager.AppData.userStore.CreateUserFromProperties(id, name: name, email: email, password: password, fbToken: nil, fbId: nil)
                     DataManager.AppData.saveUserData()
                 }
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -46,24 +43,18 @@ class APIManager {
     }
     
     class  func AddDevice(name: String, password: String, email: String) {
-        print("Add in manager")
         let dataManager = DataManager.AppData
         
         let url = dataManager.AddDeviceURL(name, password: password)
         let requestType = "POST"
-        print("URL in man: \(url)")
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(((parsedResponse[0] as NSString).substringToIndex(7) as String) == "User ID") {
                 print("Success: \(parsedResponse[0] as NSString)")
                 if let id = parsedResponse[0].getNumericPostscript() {
                     DataManager.AppData.userStore.CreateUserFromProperties(id, name: name, email: email, password: password, fbToken: nil, fbId: nil)
                     DataManager.AppData.saveUserData()
-                } else {
-                    print("Could not parse")
                 }
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -78,16 +69,12 @@ class APIManager {
         requestBody["Email"] = email
         requestBody["Password"] = password
         requestBody["ID"] = dataManager.userStore.user?.ID!
-        print("Body: \(requestBody)")
         
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: requestBody, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if((parsedResponse[0] as NSString) == "Changed!") {
-                print("Success")
                 DataManager.AppData.userStore.CreateUserFromProperties((dataManager.userStore.user?.ID!)!, name: name, email: email, password: password, fbToken: nil, fbId: nil)
                 DataManager.AppData.saveUserData()
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -102,13 +89,10 @@ class APIManager {
         let requestType = "PUT"
         
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if((parsedResponse[0] as NSString) == "Changed!") {
-                print("Success")
                 DataManager.AppData.userStore.CreateUserFromProperties((dataManager.userStore.user?.ID!)!, name: dataManager.userStore.user!.Name!, email: dataManager.userStore.user!.Email!, password: password, fbToken: dataManager.userStore.user!.FBAccessToken, fbId: dataManager.userStore.user!.FBUserID)
                 DataManager.AppData.saveUserData()
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -121,17 +105,13 @@ class APIManager {
         let requestType = "GET"
         
         HTTPRequests.RequestManager.GetJSONResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : Dictionary<String, AnyObject>) -> Void in
-            print("Handling")
             if let _ = parsedResponse["ID"] {
-                print("Success")
             DataManager.AppData.userStore.CreateUserFromProperties(Int((parsedResponse["ID"]! as! NSString).intValue), name: parsedResponse["UserName"]! as! String, email: email, password: password, fbToken: dataManager.userStore.user!.FBAccessToken, fbId: dataManager.userStore.user!.FBUserID)
                 DataManager.AppData.saveUserData()
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed("Unknown error")
             }
             }, errorHandler: {(parsedResponse : [String]) -> Void in
-                print("Error")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
         })
     }
@@ -159,12 +139,9 @@ class APIManager {
         body["GameType"] = game.gameType!.rawValue
         
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: body, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(parsedResponse[0] as NSString).substringToIndex(4) == "Game" {
-                print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Success!")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -175,9 +152,7 @@ class APIManager {
         let url = DataManager.AppData.GetAllGamesURL
         let requestType = "GET"
         HTTPRequests.RequestManager.GetJSONArrayOfObjectsResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [AnyObject]) -> Void in
-            print("Handling")
             if let _ = parsedResponse[0] as? NSDictionary {
-                print("Success! Is string.")
                 for game in parsedResponse {
                     let parsedGame = game as! NSDictionary
                     let parsedLocation = parsedGame["Location"] as! NSDictionary
@@ -198,7 +173,6 @@ class APIManager {
                 }
             } else {
                 dataManager.UserAPIActionFailed("Failed to load games from server")
-                print("Failed")
             }
         })
     }
@@ -212,12 +186,9 @@ class APIManager {
         let url = dataManager.DeleteGameURL(dataManager.userStore.user!.ID!, password: dataManager.userStore.user!.Password!, gameId: gameId)
         let requestType = "DELETE"
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(parsedResponse[0] as NSString) == "Deleted!" {
-                print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Success!")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -248,12 +219,9 @@ class APIManager {
         game["game"] = body
         
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: game, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(parsedResponse[0] as NSString).substringToIndex(4) == "Game" {
-                print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Success!")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -268,9 +236,7 @@ class APIManager {
         let url = dataManager.GetGameURL(gameId)
         let requestType = "GET"
         HTTPRequests.RequestManager.GetJSONResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : Dictionary<String, AnyObject>) -> Void in
-            print("Handling")
             if let _ = parsedResponse["Moderator"] {
-                print("Success")
                 let currentGame = Game()
                 currentGame.description = (parsedResponse["Location"]! as! String)
                 let checkGameType : String = parsedResponse["Game Type"]! as! String
@@ -295,11 +261,9 @@ class APIManager {
                 DataManager.AppData.gameStore.currentGame = currentGame
                 DataManager.AppData.UserAPIActionSuccessful("Game info")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed("Unknown error")
             }
             }, errorHandler: {(parsedResponse : [String]) -> Void in
-                print("Error")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
         })
     }
@@ -314,12 +278,9 @@ class APIManager {
         let url = dataManager.JoinGameURL(4, password: "dylan1dylan1", gameId: gameId)
         let requestType = "PUT"
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(parsedResponse[0] as NSString) == "Joined!" {
-                print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Success!")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -335,12 +296,9 @@ class APIManager {
         let url = dataManager.LeaveGameURL(4, password: "dylan1dylan1", gameId: gameId)
         let requestType = "DELETE"
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(parsedResponse[0] as NSString) == "Removed!" {
-                print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Success!")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -357,12 +315,9 @@ class APIManager {
         let body = []
         // Team game not set up yet
         HTTPRequests.RequestManager.GetJSONArrayResponseWithArrayBody(url, requestType: requestType, requestBody: body as [AnyObject], completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(parsedResponse[0] as NSString) == "Targets set up! Get going!" {
-                print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Targets set up! Get going!")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -382,11 +337,8 @@ class APIManager {
         body["Altitude"] = 0.0
         // Team game not set up yet
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: body, completion: {(parsedResponse : [String]) -> Void in
-            //print("Handling")
             if(parsedResponse[0] as NSString) == "Updated!" {
-                //print("Success!")
             } else {
-                //print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -406,12 +358,9 @@ class APIManager {
         body["Altitude"] = 0.0
         // Team game not set up yet
         HTTPRequests.RequestManager.GetJSONArrayResponse(url, requestType: requestType, requestBody: body, completion: {(parsedResponse : [String]) -> Void in
-            print("Handling")
             if(parsedResponse[0] as NSString) == "Kill!" {
-                print("Success!")
                 DataManager.AppData.UserAPIActionSuccessful("Successful kill!")
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
             }
         })
@@ -446,9 +395,7 @@ class APIManager {
         let requestType = "GET"
         
         HTTPRequests.RequestManager.GetJSONResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : Dictionary<String, AnyObject>) -> Void in
-            print("Handling")
             if let _ = parsedResponse["Targets"] {
-                print("Success")
                 let targets = parsedResponse["Targets"] as! [String]
                 let players = parsedResponse["NonTargets"] as! [String]
                 var message = "Targets-"
@@ -461,11 +408,9 @@ class APIManager {
                 }
                     DataManager.AppData.UserAPIActionSuccessful(message)
             } else {
-                print("Failed")
                 DataManager.AppData.UserAPIActionFailed("Unknown error")
             }
             }, errorHandler: {(parsedResponse : [String]) -> Void in
-                print("Error")
                 DataManager.AppData.UserAPIActionFailed(parsedResponse[0])
         })
     }

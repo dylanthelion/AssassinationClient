@@ -40,18 +40,19 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dataStore.delegate = self
+        self.dataStore.delegate = self
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dataStore.delegate = nil
+        self.dataStore.delegate = nil
+        self.navigationController?.delegate = nil
+        self.locationManager.delegate = nil
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         switch textField.tag {
         case 2:
-            print("Create picker view")
             self.disableTextFieldsForCustomInputView(textField.tag)
             let picker = self.createPickerViewWithOptions(ofType: 0)
             textField.inputView = picker
@@ -60,7 +61,6 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
             let picker = self.createPickerViewWithOptions(ofType: 1)
             textField.inputView = picker
         case 5:
-            print("Call date picker")
             self.disableTextFieldsForCustomInputView(5)
             self.showDatePicker(textField)
         default:
@@ -85,7 +85,6 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
         case 1:
             return 4
         default:
-            print("Error in numberOfRows")
             return 0
         }
     }
@@ -105,11 +104,9 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
             case 3:
                 return "Default"
             default:
-                print("Something went wrong in titleForRow")
                 return "Default"
             }
         default:
-            print("Something went wrong in titleForRow")
             return "HERP"
         }
     }
@@ -229,7 +226,6 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     }
     
     func ModelDidUpdate(message: String?) {
-        print("Model updated!")
         if let _ = message {
             let color : UIColor
             if message! == "Success!" {
@@ -242,7 +238,6 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     }
     
     func createPickerViewWithOptions(ofType type : Int) -> UIPickerView {
-        print("Add picker view")
         let picker = UIPickerView()
         picker.dataSource = self
         picker.delegate = self
