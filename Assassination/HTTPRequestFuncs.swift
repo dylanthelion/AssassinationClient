@@ -24,17 +24,12 @@ class HTTPRequests {
     }
     
     func GetJSONResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?, completion : (parsedResponse : Dictionary<String, AnyObject>) -> Void, errorHandler: (parsedResponse : [String]) -> Void) {
-        //print("URL: \(url)")
         if let _ = url {
             
             let request = BuildURLRequest(url, requestType: requestType, requestBody: requestBody)
-            /*print("URL: \(request?.URL!)")
-             print("TYPE: \(request?.HTTPMethod)")
-             print("Headers: \(request?.allHTTPHeaderFields!)")*/
             let session = NSURLSession.sharedSession()
             
             let task = session.dataTaskWithRequest(request!, completionHandler: {data, response, error -> Void in
-                //print("Response: \(response)")
                 guard data != nil else {
                     print("no data found: \(error)")
                     return
@@ -43,7 +38,6 @@ class HTTPRequests {
                 if let _ = data {
                     let checkData = self.JSONBuilder.jsonMessageStringToDictionary(data!)
                     if let _ = checkData {
-                        //print("Decoded data: \(checkData!)")
                         completion(parsedResponse: checkData as! Dictionary<String, AnyObject>)
                     } else {
                         let checkDataForError = self.JSONBuilder.JSONMessageStringToArray(data!)
@@ -62,26 +56,20 @@ class HTTPRequests {
     }
     
     func GetJSONArrayResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?, completion : (parsedResponse : [String]) -> Void) {
-        //print("URL: \(url)")
         if let _ = url {
             
             let request = BuildURLRequest(url, requestType: requestType, requestBody: requestBody)
-            //print("URL: \(request?.URL!)")
-            //print("TYPE: \(request?.HTTPMethod)")
-            //print("Headers: \(request?.allHTTPHeaderFields!)")
             let session = NSURLSession.sharedSession()
             
             let task = session.dataTaskWithRequest(request!, completionHandler: {data, response, error -> Void in
-                //print("Response: \(response)")
                 guard data != nil else {
-                    //print("no data found: \(error)")
+                    print("no data found: \(error)")
                     return
                 }
                 
                 if let _ = data {
                     let checkData = self.JSONBuilder.JSONMessageStringToArray(data!)
                     if let _ = checkData {
-                        //print("Decoded data: \(checkData!)")
                         completion(parsedResponse: checkData as! [String])
                     } else {
                         let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
@@ -95,17 +83,12 @@ class HTTPRequests {
     }
     
     func GetJSONArrayResponseWithArrayBody(url : NSURL?, requestType : String, requestBody : [AnyObject], completion : (parsedResponse : [String]) -> Void) {
-        print("URL: \(url)")
         if let _ = url {
             
             let request = BuildURLRequestWithArrayBody(url, requestType: requestType, requestBody: requestBody)
-            print("URL: \(request?.URL!)")
-            print("TYPE: \(request?.HTTPMethod)")
-            print("Headers: \(request?.allHTTPHeaderFields!)")
             let session = NSURLSession.sharedSession()
             
             let task = session.dataTaskWithRequest(request!, completionHandler: {data, response, error -> Void in
-                print("Response: \(response)")
                 guard data != nil else {
                     print("no data found: \(error)")
                     return
@@ -114,7 +97,6 @@ class HTTPRequests {
                 if let _ = data {
                     let checkData = self.JSONBuilder.JSONMessageStringToArray(data!)
                     if let _ = checkData {
-                        print("Decoded data: \(checkData!)")
                         completion(parsedResponse: checkData as! [String])
                     } else {
                         let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
@@ -128,17 +110,11 @@ class HTTPRequests {
     }
     
     func GetJSONArrayOfObjectsResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?, completion : (parsedResponse : [AnyObject]) -> Void) {
-        print("URL: \(url)")
         if let _ = url {
             
             let request = BuildURLRequest(url, requestType: requestType, requestBody: requestBody)
-            print("URL: \(request?.URL!)")
-            print("TYPE: \(request?.HTTPMethod)")
-            print("Headers: \(request?.allHTTPHeaderFields!)")
             let session = NSURLSession.sharedSession()
-            
             let task = session.dataTaskWithRequest(request!, completionHandler: {data, response, error -> Void in
-                print("Response: \(response)")
                 guard data != nil else {
                     print("no data found: \(error)")
                     return
@@ -147,7 +123,6 @@ class HTTPRequests {
                 if let _ = data {
                     let checkData = self.JSONBuilder.JSONMessageStringToArray(data!)
                     if let _ = checkData {
-                        print("Decoded data: \(checkData!)")
                         completion(parsedResponse: checkData as! [AnyObject])
                     } else {
                         let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
@@ -158,6 +133,7 @@ class HTTPRequests {
             
             task.resume()
         }
+    
     }
     
     func GetImageResponse(url : NSURL?, requestType : String, requestBody : Dictionary<String, AnyObject>?) -> UIImage? {
@@ -192,9 +168,6 @@ class HTTPRequests {
         request.HTTPMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        /*print("URL: \(request.URL!)")
-        print("TYPE: \(request.HTTPMethod)")
-        print("Headers: \(request.allHTTPHeaderFields!)")*/
         let imageData = UIImageJPEGRepresentation(image, 0.9)
         let base64String = imageData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         
@@ -210,7 +183,6 @@ class HTTPRequests {
             if let _ = data {
                 let checkData = self.JSONBuilder.JSONMessageStringToArray(data)
                 if let _ = checkData {
-                    print("Decoded data: \(checkData!)")
                     completion(parsedResponse: checkData as! [String])
                 } else {
                     let jsonStr = NSString(data: data!, encoding: NSUTF8StringEncoding)
@@ -230,9 +202,7 @@ class HTTPRequests {
         if let _ = requestBody {
             do {
                 request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(requestBody!, options: [])
-                //print("Set body to \(requestBody!)")
             } catch _ as NSError {
-                print("Failed to encode")
                 request.HTTPBody = nil
             }
         }
@@ -250,9 +220,7 @@ class HTTPRequests {
         
         do {
             request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(requestBody, options: [])
-                //print("Set body to \(requestBody!)")
         } catch _ as NSError {
-            print("Failed to encode")
             request.HTTPBody = nil
         }
         

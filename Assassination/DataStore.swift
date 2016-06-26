@@ -63,7 +63,6 @@ class DataManager : UserStoreDelegate {
         } else {
             self.userStore.user = nil
         }
-        print("Load user")
         let path = DocumentsDirectoryPath.URLByAppendingPathComponent("/UserData.plist")
         let dataEntry = NSDictionary(contentsOfFile: path.path!) as! Dictionary<String, String>
         if let checkID = dataEntry["ID"], checkName = dataEntry["Name"], checkEmail = dataEntry["Email"], checkPassword = dataEntry["Password"] {
