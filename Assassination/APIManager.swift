@@ -153,6 +153,7 @@ class APIManager {
         let requestType = "GET"
         HTTPRequests.RequestManager.GetJSONArrayOfObjectsResponse(url, requestType: requestType, requestBody: nil, completion: {(parsedResponse : [AnyObject]) -> Void in
             if let _ = parsedResponse[0] as? NSDictionary {
+                print("Number: \(parsedResponse.count)")
                 for game in parsedResponse {
                     let parsedGame = game as! NSDictionary
                     let parsedLocation = parsedGame["Location"] as! NSDictionary
@@ -169,8 +170,8 @@ class APIManager {
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
                     gameToLoad.startTime = dateFormatter.dateFromString(parsedGame["StartTime"]! as! String)
                     dataManager.gameStore.addGameToRally(gameToLoad)
-                    dataManager.UserAPIActionSuccessful("Success!")
                 }
+                dataManager.UserAPIActionSuccessful("Success!")
             } else {
                 dataManager.UserAPIActionFailed("Failed to load games from server")
             }

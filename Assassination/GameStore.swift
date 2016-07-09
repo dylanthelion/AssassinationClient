@@ -24,10 +24,15 @@ class GameStore {
     }
     
     func addGameToRally(game : Game) {
+        print("Add game")
         if let _ = games {
-            if ((games?.contains({ return $0.id == game.id })) != nil) {
-                return
+            for localGame in games! {
+                if localGame.id! == game.id! {
+                    print("Game exists: \(game.id!)")
+                    return
+                }
             }
+            print("Adding game: \(games!.count)")
             games!.append(game)
         } else {
             games = [game]

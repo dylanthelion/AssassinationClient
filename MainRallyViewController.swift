@@ -16,6 +16,7 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
     var allGames : [Game]?
     var mapViewDoneButton : UIBarButtonItem?
     var mapView : MKMapView?
+    var loading = false
     
     @IBOutlet weak var AllGamesTableView: UITableView!
     
@@ -29,14 +30,20 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
     
     override func viewWillAppear(animated: Bool) {
         self.dataStore.delegate = self
+        if !loading {
+            loadGames()
+        }
     }
     
     func loadGames() {
+        loading = true
         APIManager.GetAllGames()
+        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let _ = allGames {
+            print("Number of games: \(allGames!.count)")
             return allGames!.count
         }
         return 0
@@ -77,6 +84,7 @@ class MainRallyViewController: UIViewController, DataStoreDelegate, UITableViewD
     }
     
     func ModelDidUpdate(message: String?) {
+        loading = false
         allGames = dataStore.gameStore.games
         dispatch_async(dispatch_get_main_queue(), {
             self.AllGamesTableView.reloadData()

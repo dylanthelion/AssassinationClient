@@ -72,43 +72,43 @@ class GameDetailsViewController: UIViewController, DataStoreDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("TwoColumnTableViewCell", forIndexPath: indexPath) as! TwoColumnTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("GameDetailsTableViewCell", forIndexPath: indexPath) as! GameDetailsTableViewCell
+        cell.LabelLeft.setInsets(0, left: 10, bottom: 0, right: 0)
+        cell.LabelRight.setInsets(0, left: 10, bottom: 0, right: 0)
         if let _ = self.dataStore.gameStore.currentGame {
             switch indexPath.section {
             case 0:
                 switch  indexPath.row {
                 case 0:
-                    cell.addLabels("Moderator:", textRight: self.dataStore.gameStore.currentGame!.moderator!)
+                    cell.LabelLeft.text = "Moderator:"
+                    cell.LabelRight.text = self.dataStore.gameStore.currentGame!.moderator!
                 case 1:
-                    cell.addLabels("Location:", textRight: self.dataStore.gameStore.currentGame!.description!)
+                    cell.LabelLeft.text = "Location:"
+                    cell.LabelRight.text = self.dataStore.gameStore.currentGame!.description!
                 case 2:
-                    cell.addLabels("Show Map", textRight: "")
+                    cell.LabelLeft.text = "Show Map"
+                    cell.LabelRight.text = ""
                 case 3:
-                    cell.addLabels("Game Type:", textRight: "Individual Targets")
+                    cell.LabelLeft.text = "Game Type:"
+                    cell.LabelRight.text = "Individual Targets"
                 case 4:
-                    if let _ = self.game {
-                        //self.dataStore.gameStore.currentGame?.startTime = self.game?.startTime!
-                    }
                     let dateFormatter  = NSDateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                    //cell.addLabels("Start Time:", textRight: dateFormatter.stringFromDate(self.dataStore.gameStore.currentGame!.startTime!))
+                    cell.LabelLeft.text = "Start Time:"
+                    cell.LabelRight.text = dateFormatter.stringFromDate(self.dataStore.gameStore.currentGame!.startTime!)
                 case 5:
-                    cell.addLabels("Number of Players:", textRight: String(self.dataStore.gameStore.currentGame!.numberOfPlayers!))
+                    cell.LabelLeft.text = "Number of Players:"
+                    cell.LabelRight.text = String(self.dataStore.gameStore.currentGame!.numberOfPlayers!)
                 default:
                     print("Something went wrong")
                 }
             default:
-                cell.addLabels(dataStore.gameStore.currentGame!.joinedPlayers![indexPath.row], textRight: "")
+                cell.LabelLeft.text = dataStore.gameStore.currentGame!.joinedPlayers![indexPath.row]
+                cell.LabelRight.text = ""
             }
         } else {
             print("Game is nil")
         }
-        let xCoord : CGFloat = 0.0
-        let yCoord : CGFloat = 0.0
-        let width : CGFloat = cell.frame.width / 2.0
-        let height : CGFloat = cell.frame.height
-        cell.LabelLeft?.frame = CGRectMake(xCoord, yCoord, width, height)
-        cell.LabelRight?.frame = CGRectMake(width, yCoord, width, height)
         return cell
     }
     
