@@ -30,6 +30,7 @@
 		74675E221CF14D19007CDC3C /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74675E211CF14D19007CDC3C /* GameDetailsViewController.swift */; };
 		74675E241CF14EB9007CDC3C /* TwoColumnTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74675E231CF14EB9007CDC3C /* TwoColumnTableViewCell.swift */; };
 		74675E271CF14F7E007CDC3C /* EdgeInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74675E261CF14F7E007CDC3C /* EdgeInsetLabel.swift */; };
+		748F378F1D305883005B58B1 /* GameDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748F378E1D305883005B58B1 /* GameDetailsTableViewCell.swift */; };
 		74BC7F2D1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC7F2C1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift */; };
 		74BC7F2F1CEB5EB300B8BE1E /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BC7F2E1CEB5EB300B8BE1E /* GameStore.swift */; };
 		74C077B91CDD19BB00C70B40 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C077B81CDD19BB00C70B40 /* UserStore.swift */; };
@@ -94,6 +95,7 @@
 		74675E211CF14D19007CDC3C /* GameDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
 		74675E231CF14EB9007CDC3C /* TwoColumnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoColumnTableViewCell.swift; sourceTree = "<group>"; };
 		74675E261CF14F7E007CDC3C /* EdgeInsetLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsetLabel.swift; sourceTree = "<group>"; };
+		748F378E1D305883005B58B1 /* GameDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		74BC7F2C1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RallyGameTableViewCell.swift; sourceTree = "<group>"; };
 		74BC7F2E1CEB5EB300B8BE1E /* GameStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		74C077B81CDD19BB00C70B40 /* UserStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 			children = (
 				74BC7F2C1CEB5B0D00B8BE1E /* RallyGameTableViewCell.swift */,
 				74675E231CF14EB9007CDC3C /* TwoColumnTableViewCell.swift */,
+				748F378E1D305883005B58B1 /* GameDetailsTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -476,6 +479,7 @@
 				74D962031D00D801005F5723 /* PlayIndividualTargetsViewController.swift in Sources */,
 				745F57C31C43443D001B7CC9 /* APIManager.swift in Sources */,
 				745F57B71C4007E8001B7CC9 /* User.swift in Sources */,
+				748F378F1D305883005B58B1 /* GameDetailsTableViewCell.swift in Sources */,
 				745F57C71C434767001B7CC9 /* JSONObjectBuilder.swift in Sources */,
 				745F580A1C448A87001B7CC9 /* EditUserViewController.swift in Sources */,
 				74C850A71CE25396009C9B65 /* MainRallyViewController.swift in Sources */,
