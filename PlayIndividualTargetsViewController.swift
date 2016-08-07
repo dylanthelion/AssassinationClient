@@ -192,4 +192,9 @@ UITextFieldDelegate {
             self.mapView.addAnnotation(self.targetPin!)
         }
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
