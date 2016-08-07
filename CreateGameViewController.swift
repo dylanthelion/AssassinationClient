@@ -314,7 +314,8 @@ class CreateGameViewController: UIViewController, UITextFieldDelegate, DataStore
     }
     
     func convertCoordFromMapToAddress(coord : CLLocation) {
-        
+        let annotationsToRemove = self.mapView!.annotations.filter { $0 !== mapView!.userLocation }
+        self.mapView!.removeAnnotations( annotationsToRemove )
         let placemark = MKPlacemark(coordinate: coord.coordinate, addressDictionary: nil)
         self.mapView?.addAnnotation(placemark)
         
